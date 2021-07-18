@@ -68,7 +68,7 @@ public class CarController : MonoBehaviour
         minSpeedBeforeAllowTurningFactor = Mathf.Clamp01(minSpeedBeforeAllowTurningFactor);
 
         // Update the rotation angle based on input
-        rotationAngle -= steeringInput * turnFactor;
+        rotationAngle -= steeringInput * turnFactor * minSpeedBeforeAllowTurningFactor;
 
         // Apply steering by rotating the car object
         carRigidbody2D.MoveRotation(rotationAngle);
