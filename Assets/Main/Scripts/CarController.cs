@@ -8,12 +8,12 @@ public class CarController : MonoBehaviour
     public float driftFactor = 0.95f;
     public float accelerationFactor = 30.0f;
     public float turnFactor = 3.5f;
-    
+
     float accelerationInput = 0;
     float steeringInput = 0;
     
     float rotationAngle = 0;
-    float maxSpeed = 20;
+    float maxSpeed = 6;
 
     float velocityVsUp = 0;
 
