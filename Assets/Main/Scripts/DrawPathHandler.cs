@@ -13,12 +13,6 @@ public class DrawPathHandler : MonoBehaviour
 
     WaypointNode[] waypointNodes;
 
-    // Start is called before the first frame update
-    void Start()
-    {
- 
-    }
-
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;

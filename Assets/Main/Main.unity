@@ -333,7 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4dfb8e911698e64ea5d50fb4b61b367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 0
+  maxSpeed: 7
   minDistanceToReachWaypoint: 5
   nextWaypointNode:
   - {fileID: 718072489}
@@ -797,7 +797,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4dfb8e911698e64ea5d50fb4b61b367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 0
+  maxSpeed: 9
   minDistanceToReachWaypoint: 5
   nextWaypointNode:
   - {fileID: 47900149}
@@ -986,7 +986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &903558616
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1459,7 +1459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4dfb8e911698e64ea5d50fb4b61b367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 0
+  maxSpeed: 10
   minDistanceToReachWaypoint: 5
   nextWaypointNode:
   - {fileID: 1495522203}
@@ -1826,7 +1826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4dfb8e911698e64ea5d50fb4b61b367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 0
+  maxSpeed: 8
   minDistanceToReachWaypoint: 5
   nextWaypointNode:
   - {fileID: 1226057537}
@@ -1864,7 +1864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   driftFactor: 0.95
-  accelerationFactor: 20
+  accelerationFactor: 30
   turnFactor: 3.5
 --- !u!212 &1851146569
 SpriteRenderer:
@@ -1981,8 +1981,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cda0e6bc4985904fb815bd5fccb2569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiMode: 0
-  maxSpeed: 16
+  aiMode: 1
+  maxSpeed: 30
 --- !u!1 &1861554787
 GameObject:
   m_ObjectHideFlags: 0
