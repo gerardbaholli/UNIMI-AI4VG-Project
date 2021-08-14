@@ -8,32 +8,47 @@ public class CarController : MonoBehaviour
     public float driftFactor = 0.95f;
     public float accelerationFactor = 30.0f;
     public float turnFactor = 3.5f;
+    public float maxSpeed = 20;
 
+    // Local variables
     float accelerationInput = 0;
     float steeringInput = 0;
-    
+
     float rotationAngle = 0;
-    float maxSpeed = 6;
 
     float velocityVsUp = 0;
 
+    // Components
     Rigidbody2D carRigidbody2D;
+
 
     private void Awake()
     {
         carRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate()
+    private void Start()
+    {
+        rotationAngle = transform.rotation.eulerAngles.z;
+    }
+
+    private void FixedUpdate()
     {
         ApplyEngineForce();
+
         KillOrthogonalVelocity();
+
         ApplySteering();
     }
 
     private void ApplyEngineForce()
     {
-        // Calculate how much "forward" we are going in terms of the direction of our velocity
+        // Apply drag if there is no accelerationInput so the car stops when the player lets go of the accelerator
+        if (accelerationInput == 0)
+            carRigidbody2D.drag = Mathf.Lerp(carRigidbody2D.drag, 3.0f, Time.fixedDeltaTime * 3);
+        else carRigidbody2D.drag = 0;
+
+        // Caculate how much "forward" we are going in terms of the direction of our velocity
         velocityVsUp = Vector2.Dot(transform.up, carRigidbody2D.velocity);
 
         // Limit so we cannot go faster than the max speed in the "forward" direction
@@ -41,18 +56,12 @@ public class CarController : MonoBehaviour
             return;
 
         // Limit so we cannot go faster than the 50% of max speed in the "reverse" direction
-        if (velocityVsUp < -maxSpeed * .5f && accelerationInput < 0)
+        if (velocityVsUp < -maxSpeed * 0.5f && accelerationInput < 0)
             return;
 
         // Limit so we cannot go faster in any direction while accelerating
-        if (carRigidbody2D.velocity.sqrMagnitude > maxSpeed * maxSpeed && accelerationInput > 0)
+        if (carRigidbody2D.velocity.sqrMagnitude > maxSpeed * maxSpeed && accelerationInput > 0 && velocityVsUp > 0)
             return;
-
-        // Apply drag if there is no accelerationInput so the car stops when the player lets go of the accelerator
-        if (accelerationInput == 0)
-            carRigidbody2D.drag = Mathf.Lerp(carRigidbody2D.drag, 3.0f, Time.deltaTime * 3);
-        else
-            carRigidbody2D.drag = 0;
 
         // Create a force for the engine
         Vector2 engineForceVector = transform.up * accelerationInput * accelerationFactor;
@@ -63,8 +72,8 @@ public class CarController : MonoBehaviour
 
     private void ApplySteering()
     {
-        // Limit the car ability to turn when moving slowly
-        float minSpeedBeforeAllowTurningFactor = (carRigidbody2D.velocity.magnitude / 8);
+        // Limit the cars ability to turn when moving slowly
+        float minSpeedBeforeAllowTurningFactor = (carRigidbody2D.velocity.magnitude / 2);
         minSpeedBeforeAllowTurningFactor = Mathf.Clamp01(minSpeedBeforeAllowTurningFactor);
 
         // Update the rotation angle based on input
@@ -76,14 +85,45 @@ public class CarController : MonoBehaviour
 
     private void KillOrthogonalVelocity()
     {
+        // Get forward and right velocity of the car
         Vector2 forwardVelocity = transform.up * Vector2.Dot(carRigidbody2D.velocity, transform.up);
         Vector2 rightVelocity = transform.right * Vector2.Dot(carRigidbody2D.velocity, transform.right);
 
+        // Kill the orthogonal velocity (side velocity) based on how much the car should drift. 
         carRigidbody2D.velocity = forwardVelocity + rightVelocity * driftFactor;
+    }
+
+    private float GetLateralVelocity()
+    {
+        // Returns how how fast the car is moving sideways. 
+        return Vector2.Dot(transform.right, carRigidbody2D.velocity);
+    }
+
+    public bool IsTireScreeching(out float lateralVelocity, out bool isBraking)
+    {
+        lateralVelocity = GetLateralVelocity();
+        isBraking = false;
+
+        // Check if we are moving forward and if the player is hitting the brakes. In that case the tires should screech.
+        if (accelerationInput < 0 && velocityVsUp > 0)
+        {
+            isBraking = true;
+            return true;
+        }
+
+        // If we have a lot of side movement then the tires should be screeching
+        if (Mathf.Abs(GetLateralVelocity()) > 4.0f)
+            return true;
+
+        return false;
     }
 
     public void SetInputVector(Vector2 inputVector)
     {
+        // Clamp input to -1 and 1. 
+        inputVector.x = Mathf.Clamp(inputVector.x, -1.0f, 1.0f);
+        inputVector.y = Mathf.Clamp(inputVector.y, -1.0f, 1.0f);
+
         steeringInput = inputVector.x;
         accelerationInput = inputVector.y;
     }
@@ -93,5 +133,8 @@ public class CarController : MonoBehaviour
         return carRigidbody2D.velocity.magnitude;
     }
 
-
+    public float GetVelocityVsUp()
+    {
+        return velocityVsUp;
+    }
 }
