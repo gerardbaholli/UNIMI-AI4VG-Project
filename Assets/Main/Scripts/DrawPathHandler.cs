@@ -9,14 +9,31 @@ using UnityEditor;
 
 public class DrawPathHandler : MonoBehaviour
 {
-    public Transform transformRootObject;
+    public enum GizmosColor { Red, Blue, Yellow, Green };
 
-    WaypointNode[] waypointNodes;
+    [SerializeField] GizmosColor gizmosColor;
+    [SerializeField] Transform transformRootObject;
+
+    private WaypointNode[] waypointNodes;
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-
+        switch (gizmosColor)
+        {
+            case GizmosColor.Red:
+                Gizmos.color = Color.red;
+                break;
+            case GizmosColor.Blue:
+                Gizmos.color = Color.blue;
+                break;
+            case GizmosColor.Yellow:
+                Gizmos.color = Color.yellow;
+                break;
+            case GizmosColor.Green:
+                Gizmos.color = Color.green;
+                break;
+        }
+        
         if (transformRootObject == null)
             return;
 

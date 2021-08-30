@@ -41,20 +41,16 @@ public class CarAIHandler : MonoBehaviour
     {
         Vector2 inputVector = Vector2.zero;
 
-        switch (aiMode)
-        {
-            case AIMode.followPlayer:
-                FollowPlayer();
-                break;
+        //switch (aiMode)
+        //{
+        //    case AIMode.followPlayer:
+        //        FollowPlayer();
+        //        break;
 
-            case AIMode.followWaypoints:
-                FollowWaypoints();
-                break;
-
-            case AIMode.followMouse:
-                FollowMousePosition();
-                break;
-        }
+        //    case AIMode.followWaypoints:
+        //        FollowWaypoints();
+        //        break;
+        //}
 
         inputVector.x = TurnTowardTarget();
         inputVector.y = ApplyThrottleOrBrake(inputVector.x);
@@ -74,11 +70,13 @@ public class CarAIHandler : MonoBehaviour
     }
 
     // AI follows waypoints
-    private void FollowWaypoints()
+    public void FollowWaypoints()
     {
         // Pick the cloesest waypoint if we don't have a waypoint set.
         if (currentWaypoint == null)
             currentWaypoint = FindClosestWayPoint();
+
+        Debug.Log("waypointCurrent " + currentWaypoint);
 
         // Set the target on the waypoints position
         if (currentWaypoint != null)
@@ -100,16 +98,6 @@ public class CarAIHandler : MonoBehaviour
                 currentWaypoint = currentWaypoint.nextWaypointNode[Random.Range(0, currentWaypoint.nextWaypointNode.Length)];
             }
         }
-    }
-
-    // AI follows the mouse position
-    private void FollowMousePosition()
-    {
-        // Take the mouse position in screen space and convert it to world space
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        // Set the target position of for the AI. 
-        targetPosition = worldPosition;
     }
 
     // Find the cloest Waypoint to the AI
@@ -226,5 +214,16 @@ public class CarAIHandler : MonoBehaviour
 
         // We need assign a default value if we didn't hit any cars before we exit the function. 
         newVectorToTarget = vectorToTarget;
+    }
+
+    public void Move()
+    {
+        Vector2 inputVector = Vector2.zero;
+
+        inputVector.x = TurnTowardTarget();
+        inputVector.y = ApplyThrottleOrBrake(inputVector.x);
+
+        // Send the input to the car controller.
+        carController.SetInputVector(inputVector);
     }
 }

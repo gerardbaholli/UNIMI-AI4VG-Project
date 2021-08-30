@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class WaypointNode : MonoBehaviour
 {
+    public enum NodeType { raceNode, pitstopNode };
+
+    [Header("Set the role of the node")]
+    [SerializeField] NodeType nodeType;
+
     // What is the max speed allowed when passing this waypoint
     [Header("Speed set once we reach the waypoint")]
     public float maxSpeed = 0;
