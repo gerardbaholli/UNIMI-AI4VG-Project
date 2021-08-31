@@ -24,7 +24,7 @@ public class FSMTransition {
 
 	// Call all  actions
 	public void Fire() {
-		if(myActions != null) foreach (FSMAction action in myActions) action();
+		foreach (FSMAction action in myActions) action();
 	}
 }
 

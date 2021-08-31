@@ -188,6 +188,10 @@ MonoBehaviour:
   - {fileID: 2094197393}
   - {fileID: 453663454}
   - {fileID: 2107281431}
+  material: {fileID: 0}
+  bestCoverSpot: {fileID: 0}
+  agent: {fileID: 0}
+  _currentHealth: 0
 --- !u!65 &126615592
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -385,6 +389,10 @@ MonoBehaviour:
   - {fileID: 2094197393}
   - {fileID: 453663454}
   - {fileID: 2107281431}
+  material: {fileID: 0}
+  bestCoverSpot: {fileID: 0}
+  agent: {fileID: 0}
+  _currentHealth: 0
 --- !u!195 &350279349
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -915,6 +923,10 @@ MonoBehaviour:
   - {fileID: 2094197393}
   - {fileID: 453663454}
   - {fileID: 2107281431}
+  material: {fileID: 0}
+  bestCoverSpot: {fileID: 0}
+  agent: {fileID: 0}
+  _currentHealth: 0
 --- !u!65 &1961381102
 BoxCollider:
   m_ObjectHideFlags: 0

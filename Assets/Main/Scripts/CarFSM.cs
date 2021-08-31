@@ -20,14 +20,10 @@ public class CarFSM : MonoBehaviour
         stop.stayActions.Add(Stop);
 
         FSMState race = new FSMState();
-        //race.enterActions.Add(Race);
         race.stayActions.Add(Race);
-        //race.exitActions.Add(Race);
 
         FSMState pitstop = new FSMState();
-        //pitstop.enterActions.Add(Pit);
         pitstop.stayActions.Add(Pit);
-        //pitstop.exitActions.Add(Pit);
 
         FSMTransition t1 = new FSMTransition(StartToRace);
         FSMTransition t2 = new FSMTransition(StopRace);
