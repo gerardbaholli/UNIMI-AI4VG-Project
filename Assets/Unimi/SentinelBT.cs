@@ -1,81 +1,61 @@
 using UnityEngine;
 using System.Collections;
 
-using MonoBT;
-
-[RequireComponent(typeof(SeekBehaviour))]
-[RequireComponent(typeof(FleeBehaviour))]
+using CRBT;
 
 public class SentinelBT : MonoBehaviour
 {
 
-	[Range(0f, 20f)] public float sensingRange = 10f;
-	[Range(0f, 20f)] public float fearRange = 4f;
-	public string targetTag = "Player";
+	public float reactionTime = .2f;
 
-	void Start()
+	SystemStatus systemStatus;
+	BehaviorTree AI;
+
+    private void Awake()
+    {
+		systemStatus = FindObjectOfType<SystemStatus>();
+    }
+
+    void Start()
 	{
 		BTAction a1 = new BTAction(Hide);
 		BTAction a2 = new BTAction(Show);
-		BTAction a3 = new BTAction(Chase);
-		BTAction a4 = new BTAction(Flee);
 
-		BTCondition c1 = new BTCondition(EnemyOutsideRange);
-		BTCondition c2 = new BTCondition(EnemyNotTooClose);
+		BTCondition c1 = new BTCondition(SafetyCar);
 
-		BTDecorator d1 = new BTDecoratorUntilFail(c1);
+		BTSequence s1 = new BTSequence(new IBTTask[] { c1, a1 });
+		BTSelector s2 = new BTSelector(new IBTTask[] { s1, a2 });
 
-		BTSequence s2 = new BTSequence(new IBTTask[] { c2, a3 });
-		BTDecorator d2 = new BTDecoratorUntilFail(s2);
+		//BehaviorTree RaceBT = new BehaviorTree(s2);
+		AI = new BehaviorTree(s2);
 
-		BTSequence s1 = new BTSequence(new IBTTask[] { a1, d1, a2, d2, a4 });
-
-		BehaviorTree AI = new BehaviorTree(s1);
-
-		AI.Run(); // System stops HERE!
+		StartCoroutine(Patrol());
 	}
 
-	// GIMMICS
-
-	private void OnValidate()
+	public IEnumerator Patrol()
 	{
-		Transform t = transform.Find("Long Range");
-		if (t != null)
-		{ // we assume it is a plane 
-			t.localScale = new Vector3(sensingRange / transform.localScale.x, 1f, sensingRange / transform.localScale.z) / 5f;
-		}
-		t = transform.Find("Short Range");
-		if (t != null)
+		while (AI.Step())
 		{
-			t.localScale = new Vector3(fearRange / transform.localScale.x, 1f, fearRange / transform.localScale.z) / 5f;
+			yield return new WaitForSeconds(reactionTime);
 		}
 	}
+
 	// CONDITIONS
 
-	private Transform target;
-
-	public bool EnemyOutsideRange()
-	{
-		foreach (GameObject go in GameObject.FindGameObjectsWithTag(targetTag))
-		{
-			if ((go.transform.position - transform.position).magnitude < sensingRange)
-			{
-				target = go.transform;
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public bool EnemyNotTooClose()
-	{
-		return (target.transform.position - transform.position).magnitude > fearRange;
-	}
+	public bool SafetyCar()
+    {
+		if (systemStatus.IsSafetyCarDelivered())
+        {
+			return true;
+        }
+		return false;
+    }
 
 	// ACTIONS
 
 	public bool Hide()
 	{
+		Debug.Log("SAFETY CAR IS ON - HIDE!");
 		GetComponent<MeshRenderer>().enabled = false;
 		return true;
 	}
@@ -83,21 +63,9 @@ public class SentinelBT : MonoBehaviour
 
 	public bool Show()
 	{
+		Debug.Log("SAFETY CAR IS OFF");
 		GetComponent<MeshRenderer>().enabled = true;
 		return true;
 	}
 
-	public bool Chase()
-	{
-		GetComponent<SeekBehaviour>().destination = target;
-		GetComponent<FleeBehaviour>().destination = null;
-		return true;
-	}
-
-	public bool Flee()
-	{
-		GetComponent<SeekBehaviour>().destination = null;
-		GetComponent<FleeBehaviour>().destination = target;
-		return true;
-	}
 }
