@@ -14,7 +14,7 @@ public class CarAIHandler : MonoBehaviour
 
     // Local variables
     Vector3 targetPosition = Vector3.zero;
-    Transform targetTransform = null;
+    //Transform targetTransform = null;
 
     // Avoidance
     Vector2 avoidanceVectorLerped = Vector3.zero;
@@ -22,6 +22,8 @@ public class CarAIHandler : MonoBehaviour
     // Waypoints
     WaypointNode currentWaypoint = null;
     WaypointNode[] allWayPoints;
+    List<WaypointNode> raceNodes;
+    List<WaypointNode> pitstopNodes;
 
     // Colliders
     PolygonCollider2D polygonCollider2D;
@@ -33,6 +35,28 @@ public class CarAIHandler : MonoBehaviour
     {
         carController = GetComponent<CarController>();
         allWayPoints = FindObjectsOfType<WaypointNode>();
+        raceNodes = new List<WaypointNode>();
+        pitstopNodes = new List<WaypointNode>();
+
+        foreach (WaypointNode node in allWayPoints)
+        {
+            if (node.nodeType == WaypointNode.NodeType.raceNode)
+            {
+                raceNodes.Add(node);
+            } else if (node.nodeType == WaypointNode.NodeType.pitstopNode)
+            {
+                pitstopNodes.Add(node);
+            }
+        }
+
+        foreach(WaypointNode node in raceNodes)
+        {
+            //Debug.Log("RACE +++ " + node.nodeType + " " + node.name);
+        }
+        foreach (WaypointNode node in pitstopNodes)
+        {
+            //Debug.Log("PITSTOP +++ " + node.nodeType + " " + node.name);
+        }
 
         polygonCollider2D = GetComponentInChildren<PolygonCollider2D>();
     }
@@ -43,10 +67,6 @@ public class CarAIHandler : MonoBehaviour
 
         //switch (aiMode)
         //{
-        //    case AIMode.followPlayer:
-        //        FollowPlayer();
-        //        break;
-
         //    case AIMode.followWaypoints:
         //        FollowWaypoints();
         //        break;
@@ -59,24 +79,17 @@ public class CarAIHandler : MonoBehaviour
         carController.SetInputVector(inputVector);
     }
 
-    // AI follows player
-    private void FollowPlayer()
-    {
-        if (targetTransform == null)
-            targetTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
-        if (targetTransform != null)
-            targetPosition = targetTransform.position;
-    }
-
-    // AI follows waypoints
-    public void FollowWaypoints()
+    // FOLLOW RACE WAYPOINT
+    public void FollowRaceWaypoints()
     {
         // Pick the cloesest waypoint if we don't have a waypoint set.
-        if (currentWaypoint == null)
-            currentWaypoint = FindClosestWayPoint();
+        if (currentWaypoint == null || currentWaypoint.nextWaypointNode.nodeType == WaypointNode.NodeType.pitstopNode)
+        {
+            currentWaypoint = FindClosestRaceWayPoint();
+        }
 
-        Debug.Log("waypointCurrent " + currentWaypoint);
+        //Debug.Log("RACE NODE - " + currentWaypoint);
 
         // Set the target on the waypoints position
         if (currentWaypoint != null)
@@ -94,18 +107,74 @@ public class CarAIHandler : MonoBehaviour
                     maxSpeed = currentWaypoint.maxSpeed;
                 else maxSpeed = 1000;
 
-                // If we are close enough then follow to the next waypoint, if there are multiple waypoints then pick one at random.
-                currentWaypoint = currentWaypoint.nextWaypointNode[Random.Range(0, currentWaypoint.nextWaypointNode.Length)];
+                currentWaypoint = currentWaypoint.nextWaypointNode;
             }
         }
+
+        Move();
     }
 
-    // Find the cloest Waypoint to the AI
-    private WaypointNode FindClosestWayPoint()
+    // FIND RACE WAYPOINT
+    private WaypointNode FindClosestRaceWayPoint()
     {
-        return allWayPoints
+        return raceNodes
             .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
             .FirstOrDefault();
+    }
+
+    // FOLLOW PITSTOP WAYPOINT
+    public void FollowPitstopWaypoints()
+    {
+        // Pick the cloesest waypoint if we don't have a waypoint set.
+        if (currentWaypoint == null || currentWaypoint.nextWaypointNode.nodeType == WaypointNode.NodeType.raceNode)
+        {
+            currentWaypoint = FindClosestPitstopWayPoint();
+        }
+
+        //Debug.Log("PITSTOP NODE - " + currentWaypoint.transform.position);
+
+        // Set the target on the waypoints position
+        if (currentWaypoint != null)
+        {
+            // Set the target position of for the AI. 
+            targetPosition = currentWaypoint.transform.position;
+
+            //Debug.Log("targetPosition @@@ " + targetPosition);
+
+            // Store how close we are to the target
+            float distanceToWayPoint = (targetPosition - transform.position).magnitude;
+
+            // Check if we are close enough to consider that we have reached the waypoint
+            if (distanceToWayPoint <= currentWaypoint.minDistanceToReachWaypoint)
+            {
+                if (currentWaypoint.maxSpeed > 0)
+                    maxSpeed = currentWaypoint.maxSpeed;
+                else maxSpeed = 1000;
+
+                currentWaypoint = currentWaypoint.nextWaypointNode;
+            }
+        }
+
+        Move();
+    }
+
+    // FIND PITSTOP WAYPOINT
+    private WaypointNode FindClosestPitstopWayPoint()
+    {
+        return pitstopNodes
+            .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
+            .FirstOrDefault();
+    }
+
+    private void Move()
+    {
+        Vector2 inputVector = Vector2.zero;
+
+        inputVector.x = TurnTowardTarget();
+        inputVector.y = ApplyThrottleOrBrake(inputVector.x);
+
+        // Send the input to the car controller.
+        carController.SetInputVector(inputVector);
     }
 
     private float TurnTowardTarget()
@@ -121,7 +190,8 @@ public class CarAIHandler : MonoBehaviour
         float angleToTarget = Vector2.SignedAngle(transform.up, vectorToTarget);
         angleToTarget *= -1;
 
-        // We want the car to turn as much as possible if the angle is greater than 45 degrees and we wan't it to smooth out so if the angle is small we want the AI to make smaller corrections. 
+        // We want the car to turn as much as possible if the angle is greater than 45 degrees and
+        // we wan't it to smooth out so if the angle is small we want the AI to make smaller corrections. 
         float steerAmount = angleToTarget / 45.0f;
 
         // Clamp steering to between -1 and 1.
@@ -136,11 +206,11 @@ public class CarAIHandler : MonoBehaviour
         if (carController.GetVelocityMagnitude() > maxSpeed)
             return 0;
 
-        // Apply throttle forward based on how much the car wants to turn. If it's a sharp turn this will cause the car to apply less speed forward.
+        // Apply throttle forward based on how much the car wants to turn.
+        // If it's a sharp turn this will cause the car to apply less speed forward.
         return 1.05f - Mathf.Abs(inputX) / 1.0f;
     }
 
-    // Checks for cars ahead of the car.
     private bool IsCarsInFrontOfAICar(out Vector3 position, out Vector3 otherCarRightVector)
     {
         // Disable the cars own collider to avoid having the AI car detect itself. 
@@ -216,14 +286,4 @@ public class CarAIHandler : MonoBehaviour
         newVectorToTarget = vectorToTarget;
     }
 
-    public void Move()
-    {
-        Vector2 inputVector = Vector2.zero;
-
-        inputVector.x = TurnTowardTarget();
-        inputVector.y = ApplyThrottleOrBrake(inputVector.x);
-
-        // Send the input to the car controller.
-        carController.SetInputVector(inputVector);
-    }
 }

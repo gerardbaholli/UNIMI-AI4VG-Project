@@ -8,21 +8,36 @@ public class CarFSM : MonoBehaviour
     private FSM fsm;
     public float updateTimer = 0.3f;
 
-    public bool stop = false;
+    public float tireCondition = 100f;
 
+
+    public bool start = false;
+    public bool pitstop = false;
 
     private void Start()
     {
-        FSMState race = new FSMState();
-        race.stayActions.Add(Race);
-
         FSMState stop = new FSMState();
+        stop.stayActions.Add(Stop);
+
+        FSMState race = new FSMState();
+        //race.enterActions.Add(Race);
+        race.stayActions.Add(Race);
+        //race.exitActions.Add(Race);
+
+        FSMState pitstop = new FSMState();
+        //pitstop.enterActions.Add(Pit);
+        pitstop.stayActions.Add(Pit);
+        //pitstop.exitActions.Add(Pit);
 
         FSMTransition t1 = new FSMTransition(StartToRace);
         FSMTransition t2 = new FSMTransition(StopRace);
+        FSMTransition t3 = new FSMTransition(GoPit);
+        FSMTransition t4 = new FSMTransition(ExitPit);
 
         stop.AddTransition(t1, race);
         race.AddTransition(t2, stop);
+        race.AddTransition(t3, pitstop);
+        pitstop.AddTransition(t4, race);
 
         fsm = new FSM(stop);
 
@@ -38,16 +53,35 @@ public class CarFSM : MonoBehaviour
         }
     }
 
+
     // CONDITIONS
 
     public bool StartToRace()
     {
-        return stop;
+        return start;
     }
 
     public bool StopRace()
     {
-        return !stop;
+        return !start;
+    }
+
+    public bool GoPit()
+    {
+        if (tireCondition <= 20f)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool ExitPit()
+    {
+        if (tireCondition >= 100f)
+        {
+            return true;
+        }
+        return false;
     }
 
     // ACTIONS
@@ -55,13 +89,20 @@ public class CarFSM : MonoBehaviour
     public void Race()
     {
         Debug.Log("Race");
-        carAIHandler.FollowWaypoints();
-        carAIHandler.Move();
+        carAIHandler.FollowRaceWaypoints();
+        tireCondition -= 0.1f;
     }
 
     public void Stop()
     {
         Debug.Log("Stop");
+    }
+
+    public void Pit()
+    {
+        Debug.Log("Pit");
+        carAIHandler.FollowPitstopWaypoints();
+        tireCondition += 0.1f;
     }
 
 }
