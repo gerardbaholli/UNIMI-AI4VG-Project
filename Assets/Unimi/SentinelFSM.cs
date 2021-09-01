@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CRBT;
 
 public class SentinelFSM : MonoBehaviour
 {
@@ -16,6 +17,17 @@ public class SentinelFSM : MonoBehaviour
     private float ringStart;
     private Color initialColor;
 
+    //-----------
+    SentinelBT sentinelBT;
+    SystemStatus systemStatus;
+    BehaviorTree AI;
+
+    private void Awake()
+    {
+        systemStatus = FindObjectOfType<SystemStatus>();
+        sentinelBT = GetComponent<SentinelBT>();
+    }
+
     void Start()
     {
         Debug.Log("Start");
@@ -26,9 +38,9 @@ public class SentinelFSM : MonoBehaviour
         FSMState off = new FSMState();
 
         FSMState alarm = new FSMState();
-        alarm.enterActions.Add(StartAlarm);
+        alarm.enterActions.Add(LaunchSentinelBT);
         alarm.stayActions.Add(RingAlarm);
-        alarm.exitActions.Add(ShutAlarm);
+        alarm.exitActions.Add(LaunchSentinelBT);
 
         // Define transitions
         FSMTransition t1 = new FSMTransition(EnemiesAround);
@@ -46,7 +58,6 @@ public class SentinelFSM : MonoBehaviour
     }
 
     // GIMMICS
-
     private void OnValidate()
     {
         Transform t = transform.Find("Range");
@@ -67,7 +78,6 @@ public class SentinelFSM : MonoBehaviour
     }
 
     // CONDITIONS
-
     public bool EnemiesAround()
     {
         foreach (GameObject go in GameObject.FindGameObjectsWithTag(targetTag))
@@ -110,4 +120,11 @@ public class SentinelFSM : MonoBehaviour
             ambientLight.color = color2;
         }
     }
+
+    //BT ACTION
+    public void LaunchSentinelBT()
+    {
+        sentinelBT.LaunchFromOutside();
+    }
+
 }
