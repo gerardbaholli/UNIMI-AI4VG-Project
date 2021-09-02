@@ -18,4 +18,14 @@ public class WaypointNode : MonoBehaviour
 
     [SerializeField] public WaypointNode nextWaypointNode;
 
+    private void Start()
+    {
+        //Check and ensure that there is a waypoint assigned
+        if (nextWaypointNode == null)
+        {
+            Debug.LogError($"Waypoint {gameObject.name} is missing a nextWaypointNode. Please assign one in the inspector");
+        }
+
+    }
+
 }

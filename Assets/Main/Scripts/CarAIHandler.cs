@@ -5,10 +5,8 @@ using System.Linq;
 
 public class CarAIHandler : MonoBehaviour
 {
-    public enum AIMode { followPlayer, followWaypoints, followMouse };
 
     [Header("AI settings")]
-    public AIMode aiMode;
     public float maxSpeed = 16;
     public bool isAvoidingCars = true;
 
@@ -21,6 +19,7 @@ public class CarAIHandler : MonoBehaviour
 
     // Waypoints
     WaypointNode currentWaypoint = null;
+    WaypointNode previousWaypoint = null;
     WaypointNode[] allWayPoints;
     List<WaypointNode> raceNodes;
     List<WaypointNode> pitstopNodes;
@@ -49,28 +48,12 @@ public class CarAIHandler : MonoBehaviour
             }
         }
 
-        foreach(WaypointNode node in raceNodes)
-        {
-            //Debug.Log("RACE +++ " + node.nodeType + " " + node.name);
-        }
-        foreach (WaypointNode node in pitstopNodes)
-        {
-            //Debug.Log("PITSTOP +++ " + node.nodeType + " " + node.name);
-        }
-
         polygonCollider2D = GetComponentInChildren<PolygonCollider2D>();
     }
 
     private void FixedUpdate()
     {
         Vector2 inputVector = Vector2.zero;
-
-        //switch (aiMode)
-        //{
-        //    case AIMode.followWaypoints:
-        //        FollowWaypoints();
-        //        break;
-        //}
 
         inputVector.x = TurnTowardTarget();
         inputVector.y = ApplyThrottleOrBrake(inputVector.x);
@@ -87,9 +70,8 @@ public class CarAIHandler : MonoBehaviour
         if (currentWaypoint == null || currentWaypoint.nextWaypointNode.nodeType == WaypointNode.NodeType.pitstopNode)
         {
             currentWaypoint = FindClosestRaceWayPoint();
+            previousWaypoint = currentWaypoint;
         }
-
-        //Debug.Log("RACE NODE - " + currentWaypoint);
 
         // Set the target on the waypoints position
         if (currentWaypoint != null)
@@ -100,12 +82,27 @@ public class CarAIHandler : MonoBehaviour
             // Store how close we are to the target
             float distanceToWayPoint = (targetPosition - transform.position).magnitude;
 
+            //Navigate towards nearest point on line
+            if (distanceToWayPoint > 3)
+            {
+                Vector3 nearestPointOnTheWayPointLine = FindNearestPointOnLine(previousWaypoint.transform.position, currentWaypoint.transform.position, transform.position);
+
+                float segments = distanceToWayPoint / 3.0f;  
+
+                targetPosition = (targetPosition + nearestPointOnTheWayPointLine * segments) / (segments + 1);
+
+                Debug.DrawLine(transform.position, targetPosition, Color.red);
+            }
+
             // Check if we are close enough to consider that we have reached the waypoint
             if (distanceToWayPoint <= currentWaypoint.minDistanceToReachWaypoint)
             {
                 if (currentWaypoint.maxSpeed > 0)
                     maxSpeed = currentWaypoint.maxSpeed;
                 else maxSpeed = 1000;
+
+                //Store the current waypoint as previous before we assign a new current one.
+                previousWaypoint = currentWaypoint;
 
                 currentWaypoint = currentWaypoint.nextWaypointNode;
             }
@@ -209,6 +206,26 @@ public class CarAIHandler : MonoBehaviour
         // Apply throttle forward based on how much the car wants to turn.
         // If it's a sharp turn this will cause the car to apply less speed forward.
         return 1.05f - Mathf.Abs(inputX) / 1.0f;
+    }
+
+    //Finds the nearest point on a line. 
+    private Vector2 FindNearestPointOnLine(Vector2 lineStartPosition, Vector2 lineEndPosition, Vector2 point)
+    {
+        //Get heading as a vector
+        Vector2 lineHeadingVector = (lineEndPosition - lineStartPosition);
+
+        //Store the max distance
+        float maxDistance = lineHeadingVector.magnitude;
+        lineHeadingVector.Normalize();
+
+        //Do projection from the start position to the point
+        Vector2 lineVectorStartToPoint = point - lineStartPosition;
+        float dotProduct = Vector2.Dot(lineVectorStartToPoint, lineHeadingVector);
+
+        //Clamp the dot product to maxDistance
+        dotProduct = Mathf.Clamp(dotProduct, 0f, maxDistance);
+
+        return lineStartPosition + lineHeadingVector * dotProduct;
     }
 
     private bool IsCarsInFrontOfAICar(out Vector3 position, out Vector3 otherCarRightVector)

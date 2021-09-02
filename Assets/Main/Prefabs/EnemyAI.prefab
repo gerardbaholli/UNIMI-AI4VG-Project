@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5741665929174918177}
   - component: {fileID: 144066592029108157}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,8 @@ GameObject:
   - component: {fileID: 1306961039159378854}
   - component: {fileID: 1306961039159378850}
   - component: {fileID: 1306961039159378855}
-  m_Layer: 5
+  - component: {fileID: 1650617138}
+  m_Layer: 8
   m_Name: EnemyAI
   m_TagString: AI
   m_Icon: {fileID: 0}
@@ -94,7 +95,7 @@ Transform:
   m_GameObject: {fileID: 1306961039159378861}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.79, y: -2.27, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_Children:
   - {fileID: 5741665929174918177}
   m_Father: {fileID: 0}
@@ -186,10 +187,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   driftFactor: 0.95
-  accelerationFactor: 30
+  accelerationFactor: 5
   turnFactor: 3.5
-  maxSpeed: 20
+  maxSpeed: 3
 --- !u!114 &1306961039159378855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306961039159378861}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cda0e6bc4985904fb815bd5fccb2569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 30
+  isAvoidingCars: 1
+--- !u!114 &1650617138
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -198,10 +213,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1306961039159378861}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cda0e6bc4985904fb815bd5fccb2569, type: 3}
+  m_Script: {fileID: 11500000, guid: 0485efab95946e749b2513636bac4689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiMode: 1
-  maxSpeed: 30
-  isAvoidingCars: 1
-  allWaypoints: []
+  carAIHandler: {fileID: 1306961039159378855}
+  updateTimer: 0.01
+  tireCondition: 100
+  start: 0
+  pitstop: 0

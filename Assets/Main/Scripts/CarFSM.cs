@@ -86,7 +86,7 @@ public class CarFSM : MonoBehaviour
     {
         Debug.Log("Race");
         carAIHandler.FollowRaceWaypoints();
-        tireCondition -= 0.1f;
+        tireCondition -= 0.01f;
     }
 
     public void Stop()
@@ -98,7 +98,7 @@ public class CarFSM : MonoBehaviour
     {
         Debug.Log("Pit");
         carAIHandler.FollowPitstopWaypoints();
-        tireCondition += 0.1f;
+        tireCondition += 0.01f;
     }
 
 }
