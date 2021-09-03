@@ -11,7 +11,7 @@ public class PitstopBT : MonoBehaviour
 	CarController carController;
 	CarStatus carStatus;
 
-	[SerializeField] float reactionTime = 0.02f;
+	[SerializeField] float reactionTime = 0.05f;
 	BehaviorTree AI;
 
 	void Start()
@@ -24,13 +24,17 @@ public class PitstopBT : MonoBehaviour
 
 	public void StartBehaviourTree()
 	{
-		BTAction a0 = new BTAction(GoToEnterPitbox);
-		BTAction a1 = new BTAction(BoxEntrance);
+		BTAction a0 = new BTAction(GoToPitbox);
+		BTCondition c1 = new BTCondition(IsOutsidePitstop);
+		BTDecorator d0 = new BTDecoratorUntilFail(c1);
+
+		BTSequence s2 = new BTSequence(new IBTTask[] { c1, a0 });
+
+		BTAction a1 = new BTAction(TeleportToBox);
 		BTAction a2 = new BTAction(ChangeTires);
-		BTAction a3 = new BTAction(BoxExit);
 
 
-		BTSequence s1 = new BTSequence(new IBTTask[] { a0, a1, a2 });
+		BTSequence s1 = new BTSequence(new IBTTask[] { d0, a1, a2 });
 
 		AI = new BehaviorTree(s1);
 
@@ -45,25 +49,31 @@ public class PitstopBT : MonoBehaviour
 		}
 	}
 
-	// CONDITIONS
-	public bool IsInsidePitbox()
+
+
+
+	// ---------------- CONDITIONS ---------------- //
+	public bool IsInsidePitstop()
 	{
-		if ((Vector2)gameObject.transform.position != carStatus.GetBoxPosition())
-		{
-			return false;
-		}
-		return true;
+		return carStatus.GetActualLocation() == CarStatus.ActualLocation.Pitstop;
 	}
 
-	// ACTIONS
+	public bool IsOutsidePitstop()
+    {
+		return !IsInsidePitstop();
+    }
 
-	public bool GoToEnterPitbox()
+
+
+	// ---------------- ACTIONS ---------------- //
+	public bool GoToPitbox()
     {
 		Debug.Log("Going to pitstop");
 		carAIHandler.FollowPitstopWaypoints();
 		return true;
 	}
 
+	// TODO
 	public bool BoxEntrance()
 	{
 		//TODO: SEEK POS
@@ -76,7 +86,10 @@ public class PitstopBT : MonoBehaviour
 
 	public bool ChangeTires()
 	{
-		StartCoroutine(Wait());
+		Debug.Log("Changing tires, NOW: " + carStatus.GetTiresCondition());
+		//StartCoroutine(Wait());
+		carStatus.PutNewTires();
+		Debug.Log("Tires changed, NOW " + carStatus.GetTiresCondition());
 		return true;
 	}
 
@@ -93,5 +106,14 @@ public class PitstopBT : MonoBehaviour
 		return true;
 	}
 
+	//TO BE DELETED
+	public bool TeleportToBox()
+    {
+		Debug.Log("TELEPORTING");
+		Vector3 boxPosition = carStatus.GetBoxPosition();
+
+		gameObject.transform.position = boxPosition;
+		return gameObject.transform.position == carStatus.GetBoxPosition();
+    }
 
 }

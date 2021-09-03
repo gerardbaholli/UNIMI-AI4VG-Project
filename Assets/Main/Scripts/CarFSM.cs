@@ -12,9 +12,9 @@ public class CarFSM : MonoBehaviour
     CarStatus carStatus;
 
     private FSM fsm;
-    public float fsmUpdateTimer = 0.02f;
+    public float fsmUpdateTimer = 0.015f;
 
-    public float tireConditions = 100f; // TO BE REMOVED
+    //public float tireConditions = 100f; // TO BE REMOVED
     public bool start = false; // TO BE REMOVED
     public bool pitstop = false; // TO BE REMOVED
 
@@ -83,7 +83,7 @@ public class CarFSM : MonoBehaviour
 
     public bool GoPit()
     {
-        if (tireConditions <= 20f)
+        if (carStatus.GetTiresCondition() <= 20f)
         {
             return true;
         }
@@ -92,7 +92,7 @@ public class CarFSM : MonoBehaviour
 
     public bool ExitPit()
     {
-        if (tireConditions >= 100f)
+        if (carStatus.GetTiresCondition() >= 100f)
         {
             return true;
         }
@@ -105,7 +105,7 @@ public class CarFSM : MonoBehaviour
     {
         Debug.Log("Race");
         carAIHandler.FollowRaceWaypoints();
-        tireConditions -= 0.1f;
+        carStatus.tireConditions -= 0.13f;
     }
 
     public void Stop()
@@ -120,32 +120,10 @@ public class CarFSM : MonoBehaviour
 
         // Esegue il BT di questo stato
         pitstopBehaviorTree.StartBehaviourTree();
-        
+
         //gameObject.transform.position = carStatus.GetBoxPosition();
-        //tireConditions += 0.15f;
+        //carStatus.tireConditions += 0.15f;
     }
 
-
-
-    // BT ACTION
-    public void SlowSpeedEntrance()
-    {
-        carController.SetMaxSpeed(0.25f);
-    }
-
-    public void FastSpeedExit()
-    {
-        carController.SetMaxSpeed(2.0f);
-    }
-
-    public void BoxEntrance()
-    {
-        carAIHandler.FollowPitstopWaypoints();
-    }
-
-    public void BoxExit()
-    {
-        carAIHandler.FollowPitstopWaypoints();
-    }
 
 }

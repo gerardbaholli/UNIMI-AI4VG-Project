@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0485efab95946e749b2513636bac4689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fsmUpdateTimer: 0.3
+  fsmUpdateTimer: 0.01
   tireConditions: 100
   start: 1
   pitstop: 0
@@ -235,6 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxAssigned: {fileID: 0}
+  actualLocation: 0
   tireConditions: 100
 --- !u!114 &1976005151611206090
 MonoBehaviour:
@@ -248,4 +249,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f4aa5acd0a1764cb46be468a53a05b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reactionTime: 0.2
+  reactionTime: 0.02

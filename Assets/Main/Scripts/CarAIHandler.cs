@@ -5,7 +5,6 @@ using System.Linq;
 
 public class CarAIHandler : MonoBehaviour
 {
-
     [Header("AI settings")]
     public float maxSpeed = 16;
     public bool isAvoidingCars = true;
@@ -62,48 +61,39 @@ public class CarAIHandler : MonoBehaviour
         carController.SetInputVector(inputVector);
     }
 
-
-    // FOLLOW RACE WAYPOINT
     public void FollowRaceWaypoints()
     {
-        // Pick the cloesest waypoint if we don't have a waypoint set.
-        if (currentWaypoint == null || currentWaypoint.nextWaypointNode.nodeType == WaypointNode.NodeType.pitstopNode)
+        // (currentWaypoint == null || currentWaypoint.nextWaypointNode.nodeType == WaypointNode.NodeType.pitstopNode)
+        if (currentWaypoint == null)
         {
-            currentWaypoint = FindClosestRaceWayPoint();
+            currentWaypoint = FindClosestRaceWaypoint();
             previousWaypoint = currentWaypoint;
         }
 
-        // Set the target on the waypoints position
         if (currentWaypoint != null)
         {
-            // Set the target position of for the AI. 
             targetPosition = currentWaypoint.transform.position;
 
-            // Store how close we are to the target
-            float distanceToWayPoint = (targetPosition - transform.position).magnitude;
+            float distanceToWaypoint = (targetPosition - transform.position).magnitude;
 
-            //Navigate towards nearest point on line
-            if (distanceToWayPoint > 2f)
+            if (distanceToWaypoint > 2f)
             {
                 Vector3 nearestPointOnTheWayPointLine = FindNearestPointOnLine(previousWaypoint.transform.position, currentWaypoint.transform.position, transform.position);
 
-                float segments = distanceToWayPoint / 2f;  
+                float segments = distanceToWaypoint / 2f;  
 
                 targetPosition = (targetPosition + nearestPointOnTheWayPointLine * segments) / (segments + 1);
 
                 Debug.DrawLine(transform.position, targetPosition, Color.white);
             }
 
-            // Check if we are close enough to consider that we have reached the waypoint
-            if (distanceToWayPoint <= currentWaypoint.minDistanceToReachWaypoint)
+            if (distanceToWaypoint <= currentWaypoint.minDistanceToReachWaypoint)
             {
                 if (currentWaypoint.maxSpeed > 0)
                     maxSpeed = currentWaypoint.maxSpeed;
                 else maxSpeed = 1000;
 
-                //Store the current waypoint as previous before we assign a new current one.
                 previousWaypoint = currentWaypoint;
-
                 currentWaypoint = currentWaypoint.nextWaypointNode;
             }
         }
@@ -111,43 +101,45 @@ public class CarAIHandler : MonoBehaviour
         Move();
     }
 
-    // FIND RACE WAYPOINT
-    private WaypointNode FindClosestRaceWayPoint()
+    private WaypointNode FindClosestRaceWaypoint()
     {
         return raceNodes
             .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
             .FirstOrDefault();
     }
 
-    // FOLLOW PITSTOP WAYPOINT
     public void FollowPitstopWaypoints()
     {
-        // Pick the cloesest waypoint if we don't have a waypoint set.
         if (currentWaypoint == null || currentWaypoint.nextWaypointNode.nodeType == WaypointNode.NodeType.raceNode)
         {
-            currentWaypoint = FindClosestPitstopWayPoint();
+            currentWaypoint = FindClosestPitstopWaypoint();
+            previousWaypoint = currentWaypoint;
         }
 
-        //Debug.Log("PITSTOP NODE - " + currentWaypoint.transform.position);
-
-        // Set the target on the waypoints position
         if (currentWaypoint != null)
         {
-            // Set the target position of for the AI. 
             targetPosition = currentWaypoint.transform.position;
 
-            //Debug.Log("targetPosition @@@ " + targetPosition);
+            float distanceToWaypoint = (targetPosition - transform.position).magnitude;
 
-            // Store how close we are to the target
-            float distanceToWayPoint = (targetPosition - transform.position).magnitude;
+            if (distanceToWaypoint > 2f)
+            {
+                Vector3 nearestPointOnTheWayPointLine = FindNearestPointOnLine(previousWaypoint.transform.position, currentWaypoint.transform.position, transform.position);
 
-            // Check if we are close enough to consider that we have reached the waypoint
-            if (distanceToWayPoint <= currentWaypoint.minDistanceToReachWaypoint)
+                float segments = distanceToWaypoint / 2f;
+
+                targetPosition = (targetPosition + nearestPointOnTheWayPointLine * segments) / (segments + 1);
+
+                Debug.DrawLine(transform.position, targetPosition, Color.white);
+            }
+
+            if (distanceToWaypoint <= currentWaypoint.minDistanceToReachWaypoint)
             {
                 if (currentWaypoint.maxSpeed > 0)
                     maxSpeed = currentWaypoint.maxSpeed;
                 else maxSpeed = 1000;
 
+                previousWaypoint = currentWaypoint;
                 currentWaypoint = currentWaypoint.nextWaypointNode;
             }
         }
@@ -155,8 +147,7 @@ public class CarAIHandler : MonoBehaviour
         Move();
     }
 
-    // FIND PITSTOP WAYPOINT
-    private WaypointNode FindClosestPitstopWayPoint()
+    private WaypointNode FindClosestPitstopWaypoint()
     {
         return pitstopNodes
             .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
@@ -208,7 +199,6 @@ public class CarAIHandler : MonoBehaviour
         return 1.05f - Mathf.Abs(inputX) / 1.0f;
     }
 
-    //Finds the nearest point on a line. 
     private Vector2 FindNearestPointOnLine(Vector2 lineStartPosition, Vector2 lineEndPosition, Vector2 point)
     {
         //Get heading as a vector
