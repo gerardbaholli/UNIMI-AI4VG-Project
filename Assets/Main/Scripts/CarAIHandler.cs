@@ -83,15 +83,15 @@ public class CarAIHandler : MonoBehaviour
             float distanceToWayPoint = (targetPosition - transform.position).magnitude;
 
             //Navigate towards nearest point on line
-            if (distanceToWayPoint > 3)
+            if (distanceToWayPoint > 2f)
             {
                 Vector3 nearestPointOnTheWayPointLine = FindNearestPointOnLine(previousWaypoint.transform.position, currentWaypoint.transform.position, transform.position);
 
-                float segments = distanceToWayPoint / 3.0f;  
+                float segments = distanceToWayPoint / 2f;  
 
                 targetPosition = (targetPosition + nearestPointOnTheWayPointLine * segments) / (segments + 1);
 
-                Debug.DrawLine(transform.position, targetPosition, Color.red);
+                Debug.DrawLine(transform.position, targetPosition, Color.white);
             }
 
             // Check if we are close enough to consider that we have reached the waypoint
@@ -242,7 +242,7 @@ public class CarAIHandler : MonoBehaviour
         if (raycastHit2d.collider != null)
         {
             // Draw a red line showing how long the detection is, make it red since we have detected another car
-            Debug.DrawRay(transform.position, transform.up * 2, Color.red);
+            Debug.DrawRay(transform.position, transform.up * 1, Color.red);
 
             position = raycastHit2d.collider.transform.position;
             otherCarRightVector = raycastHit2d.collider.transform.right;
@@ -251,7 +251,7 @@ public class CarAIHandler : MonoBehaviour
         else
         {
             // We didn't detect any other car so draw black line with the distance that we use to check for other cars. 
-            Debug.DrawRay(transform.position, transform.up * 2, Color.black);
+            Debug.DrawRay(transform.position, transform.up * 1, Color.black);
         }
 
         // No car was detected but we still need assign out values so lets just return zero. 
@@ -274,7 +274,7 @@ public class CarAIHandler : MonoBehaviour
 
             // We want to be able to control how much desire the AI has to drive towards the waypoint vs avoiding the other cars. 
             // As we get closer to the waypoint the desire to reach the waypoint increases.
-            float driveToTargetInfluence = 6.0f / distanceToTarget;
+            float driveToTargetInfluence = 2.0f / distanceToTarget;
 
             // Ensure that we limit the value to between 30% and 100% as we always want the AI to desire to reach the waypoint.  
             driveToTargetInfluence = Mathf.Clamp(driveToTargetInfluence, 0.30f, 1.0f);
@@ -290,10 +290,10 @@ public class CarAIHandler : MonoBehaviour
             newVectorToTarget.Normalize();
 
             // Draw the vector which indicates the avoidance vector in green
-            Debug.DrawRay(transform.position, avoidanceVector * 10, Color.green);
+            Debug.DrawRay(transform.position, avoidanceVector * 1, Color.green);
 
             // Draw the vector that the car will actually take in yellow. 
-            Debug.DrawRay(transform.position, newVectorToTarget * 10, Color.yellow);
+            Debug.DrawRay(transform.position, newVectorToTarget * 1, Color.yellow);
 
             // We are done so we can return now. 
             return;

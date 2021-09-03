@@ -79,6 +79,8 @@ GameObject:
   - component: {fileID: 1306961039159378850}
   - component: {fileID: 1306961039159378855}
   - component: {fileID: 1650617138}
+  - component: {fileID: 5559177605929681155}
+  - component: {fileID: 1976005151611206090}
   m_Layer: 8
   m_Name: EnemyAI
   m_TagString: AI
@@ -187,9 +189,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   driftFactor: 0.95
-  accelerationFactor: 5
+  accelerationFactor: 3
   turnFactor: 3.5
-  maxSpeed: 3
+  maxSpeed: 2
 --- !u!114 &1306961039159378855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cda0e6bc4985904fb815bd5fccb2569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 30
+  maxSpeed: 20
   isAvoidingCars: 1
 --- !u!114 &1650617138
 MonoBehaviour:
@@ -216,8 +218,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0485efab95946e749b2513636bac4689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carAIHandler: {fileID: 1306961039159378855}
-  updateTimer: 0.01
-  tireCondition: 100
-  start: 0
+  fsmUpdateTimer: 0.3
+  tireConditions: 100
+  start: 1
   pitstop: 0
+--- !u!114 &5559177605929681155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306961039159378861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b783280bee066a489fa783c4030d03e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxAssigned: {fileID: 0}
+  tireConditions: 100
+--- !u!114 &1976005151611206090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306961039159378861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1f4aa5acd0a1764cb46be468a53a05b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reactionTime: 0.2

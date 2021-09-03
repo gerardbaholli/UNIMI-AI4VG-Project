@@ -1,18 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CRBT;
 
 public class CarFSM : MonoBehaviour
 {
-    [SerializeField] CarAIHandler carAIHandler;
+    SystemStatus systemStatus;
+
+    CarAIHandler carAIHandler;
+    CarController carController;
+    CarStatus carStatus;
+
     private FSM fsm;
-    public float updateTimer = 0.3f;
+    public float fsmUpdateTimer = 0.02f;
 
-    public float tireCondition = 100f;
+    public float tireConditions = 100f; // TO BE REMOVED
+    public bool start = false; // TO BE REMOVED
+    public bool pitstop = false; // TO BE REMOVED
+
+    // BEHAVIOUR TREES
+    PitstopBT raceBehaviorTree; // CHANGE IN RaceBehaviorTree
+    PitstopBT pitstopBehaviorTree;
 
 
-    public bool start = false;
-    public bool pitstop = false;
+    private void Awake()
+    {
+        systemStatus = FindObjectOfType<SystemStatus>();
+        carAIHandler = GetComponent<CarAIHandler>();
+        carController = GetComponent<CarController>();
+        carStatus = GetComponent<CarStatus>();
+        raceBehaviorTree = GetComponent<PitstopBT>();
+        pitstopBehaviorTree = GetComponent<PitstopBT>();
+    }
 
     private void Start()
     {
@@ -40,12 +59,12 @@ public class CarFSM : MonoBehaviour
         StartCoroutine(Patrol());
     }
 
-    public IEnumerator Patrol()
+    private IEnumerator Patrol()
     {
         while (true)
         {
             fsm.Update();
-            yield return new WaitForSeconds(updateTimer);
+            yield return new WaitForSeconds(fsmUpdateTimer);
         }
     }
 
@@ -64,7 +83,7 @@ public class CarFSM : MonoBehaviour
 
     public bool GoPit()
     {
-        if (tireCondition <= 20f)
+        if (tireConditions <= 20f)
         {
             return true;
         }
@@ -73,7 +92,7 @@ public class CarFSM : MonoBehaviour
 
     public bool ExitPit()
     {
-        if (tireCondition >= 100f)
+        if (tireConditions >= 100f)
         {
             return true;
         }
@@ -86,7 +105,7 @@ public class CarFSM : MonoBehaviour
     {
         Debug.Log("Race");
         carAIHandler.FollowRaceWaypoints();
-        tireCondition -= 0.01f;
+        tireConditions -= 0.1f;
     }
 
     public void Stop()
@@ -98,7 +117,35 @@ public class CarFSM : MonoBehaviour
     {
         Debug.Log("Pit");
         carAIHandler.FollowPitstopWaypoints();
-        tireCondition += 0.01f;
+
+        // Esegue il BT di questo stato
+        pitstopBehaviorTree.StartBehaviourTree();
+        
+        //gameObject.transform.position = carStatus.GetBoxPosition();
+        //tireConditions += 0.15f;
+    }
+
+
+
+    // BT ACTION
+    public void SlowSpeedEntrance()
+    {
+        carController.SetMaxSpeed(0.25f);
+    }
+
+    public void FastSpeedExit()
+    {
+        carController.SetMaxSpeed(2.0f);
+    }
+
+    public void BoxEntrance()
+    {
+        carAIHandler.FollowPitstopWaypoints();
+    }
+
+    public void BoxExit()
+    {
+        carAIHandler.FollowPitstopWaypoints();
     }
 
 }

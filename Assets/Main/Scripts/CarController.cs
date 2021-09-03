@@ -137,4 +137,15 @@ public class CarController : MonoBehaviour
     {
         return velocityVsUp;
     }
+
+    public void SetMaxSpeed(float value)
+    {
+        maxSpeed = value;
+    }
+
+    public float GetMaxSpeed()
+    {
+        return maxSpeed;
+    }
+
 }

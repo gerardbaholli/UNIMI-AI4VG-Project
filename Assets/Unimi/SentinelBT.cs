@@ -5,7 +5,6 @@ using CRBT;
 
 public class SentinelBT : MonoBehaviour
 {
-
 	public float reactionTime = .2f;
 
 	SystemStatus systemStatus;
