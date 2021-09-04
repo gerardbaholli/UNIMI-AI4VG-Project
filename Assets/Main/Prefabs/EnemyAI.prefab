@@ -191,7 +191,7 @@ MonoBehaviour:
   driftFactor: 0.95
   accelerationFactor: 3
   turnFactor: 3.5
-  maxSpeed: 2
+  maxSpeed: 1.9
 --- !u!114 &1306961039159378855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,6 +206,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 20
   isAvoidingCars: 1
+  pitstopWaypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &1650617138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,8 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0485efab95946e749b2513636bac4689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fsmUpdateTimer: 0.01
-  tireConditions: 100
+  fsmUpdateTimer: 0.015
   start: 1
   pitstop: 0
 --- !u!114 &5559177605929681155
@@ -237,6 +241,7 @@ MonoBehaviour:
   boxAssigned: {fileID: 0}
   actualLocation: 0
   tireConditions: 100
+  needToPit: 0
 --- !u!114 &1976005151611206090
 MonoBehaviour:
   m_ObjectHideFlags: 0

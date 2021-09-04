@@ -105,7 +105,7 @@ public class CarFSM : MonoBehaviour
     {
         Debug.Log("Race");
         carAIHandler.FollowRaceWaypoints();
-        carStatus.tireConditions -= 0.13f;
+        carStatus.tireConditions -= 0.15f;
     }
 
     public void Stop()
@@ -116,7 +116,7 @@ public class CarFSM : MonoBehaviour
     public void Pit()
     {
         Debug.Log("Pit");
-        carAIHandler.FollowPitstopWaypoints();
+        //carAIHandler.FollowPitstopWaypoints();
 
         // Esegue il BT di questo stato
         pitstopBehaviorTree.StartBehaviourTree();

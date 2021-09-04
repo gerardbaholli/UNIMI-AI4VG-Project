@@ -10,6 +10,7 @@ public class CarStatus : MonoBehaviour
 
     public ActualLocation actualLocation = ActualLocation.Track;
     public float tireConditions = 100f;
+    public bool needToPit = false;
 
     private void Start()
     {
@@ -18,7 +19,14 @@ public class CarStatus : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        if (tireConditions < 20)
+        {
+            needToPit = true;
+        }
+        else
+        {
+            needToPit = false;
+        }
     }
 
     public Vector3 GetBoxPosition()

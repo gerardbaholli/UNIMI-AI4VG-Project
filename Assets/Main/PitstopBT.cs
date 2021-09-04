@@ -11,6 +11,8 @@ public class PitstopBT : MonoBehaviour
 	CarController carController;
 	CarStatus carStatus;
 
+	[SerializeField] Transform pitstopEntrance;
+
 	[SerializeField] float reactionTime = 0.05f;
 	BehaviorTree AI;
 
@@ -24,11 +26,10 @@ public class PitstopBT : MonoBehaviour
 
 	public void StartBehaviourTree()
 	{
-		BTAction a0 = new BTAction(GoToPitbox);
 		BTCondition c1 = new BTCondition(IsOutsidePitstop);
-		BTDecorator d0 = new BTDecoratorUntilFail(c1);
-
+		BTAction a0 = new BTAction(GoToPitstop);
 		BTSequence s2 = new BTSequence(new IBTTask[] { c1, a0 });
+		BTDecorator d0 = new BTDecoratorUntilFail(s2);
 
 		BTAction a1 = new BTAction(TeleportToBox);
 		BTAction a2 = new BTAction(ChangeTires);
@@ -66,10 +67,15 @@ public class PitstopBT : MonoBehaviour
 
 
 	// ---------------- ACTIONS ---------------- //
-	public bool GoToPitbox()
+	public bool GoToPitstop()
     {
 		Debug.Log("Going to pitstop");
-		carAIHandler.FollowPitstopWaypoints();
+		carAIHandler.FollowRaceWaypoints();
+		Debug.Log((pitstopEntrance.position - gameObject.transform.position).magnitude < 2f);
+		if ((pitstopEntrance.position - gameObject.transform.position).magnitude < 2f)
+        {
+			carAIHandler.FollowPitstopWaypoints();
+		}
 		return true;
 	}
 

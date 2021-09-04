@@ -22,6 +22,7 @@ public class CarAIHandler : MonoBehaviour
     WaypointNode[] allWayPoints;
     List<WaypointNode> raceNodes;
     List<WaypointNode> pitstopNodes;
+    [SerializeField] WaypointNode[] pitstopWaypoints;
 
     // Colliders
     PolygonCollider2D polygonCollider2D;
@@ -72,6 +73,12 @@ public class CarAIHandler : MonoBehaviour
 
         if (currentWaypoint != null)
         {
+            //Debug.Log(Vector3.Dot(currentWaypoint.transform.position.normalized, gameObject.transform.up.normalized));
+            if (Vector3.Dot(currentWaypoint.transform.position.normalized, gameObject.transform.up.normalized) < -0.2f)
+            {
+                currentWaypoint = currentWaypoint.nextWaypointNode;
+            }
+
             targetPosition = currentWaypoint.transform.position;
 
             float distanceToWaypoint = (targetPosition - transform.position).magnitude;
@@ -118,6 +125,11 @@ public class CarAIHandler : MonoBehaviour
 
         if (currentWaypoint != null)
         {
+            if (Vector3.Dot(currentWaypoint.transform.position, currentWaypoint.nextWaypointNode.transform.position) < 0.2f)
+            {
+                currentWaypoint = currentWaypoint.nextWaypointNode;
+            }
+
             targetPosition = currentWaypoint.transform.position;
 
             float distanceToWaypoint = (targetPosition - transform.position).magnitude;
