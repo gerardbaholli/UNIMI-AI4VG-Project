@@ -9,7 +9,7 @@ public class CarStatus : MonoBehaviour
     [SerializeField] GameObject boxAssigned;
 
     public ActualLocation actualLocation = ActualLocation.Track;
-    public float tireConditions = 100f;
+    public float tiresCondition = 100f;
     public bool needToPit = false;
 
     private void Start()
@@ -19,7 +19,7 @@ public class CarStatus : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (tireConditions < 20)
+        if (tiresCondition < 20)
         {
             needToPit = true;
         }
@@ -46,12 +46,12 @@ public class CarStatus : MonoBehaviour
     
     public float GetTiresCondition()
     {
-        return tireConditions;
+        return tiresCondition;
     }
 
     public void PutNewTires()
     {
-        tireConditions = 100f;
+        tiresCondition = 100f;
         Debug.Log("Putted new tires!!!");
     }
 

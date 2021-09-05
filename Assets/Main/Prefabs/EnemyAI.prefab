@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0485efab95946e749b2513636bac4689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fsmUpdateTimer: 0.015
+  fsmUpdateTimer: 0.2
   start: 1
   pitstop: 0
 --- !u!114 &5559177605929681155

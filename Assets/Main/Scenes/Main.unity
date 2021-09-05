@@ -249,9 +249,6 @@ Transform:
   - {fileID: 1856301587}
   - {fileID: 1340555187}
   - {fileID: 1862052163}
-  - {fileID: 962705288}
-  - {fileID: 1564151847}
-  - {fileID: 1308967853}
   m_Father: {fileID: 1216486624}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1864,53 +1861,6 @@ Transform:
   m_Father: {fileID: 2006009726}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &962705287
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 962705288}
-  - component: {fileID: 962705289}
-  m_Layer: 0
-  m_Name: Pitstop Node (4)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &962705288
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 962705287}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.49, y: 0.37, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 46625753}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &962705289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 962705287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4dfb8e911698e64ea5d50fb4b61b367, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nodeType: 1
-  maxSpeed: 0
-  minDistanceToReachWaypoint: 1
-  nextWaypointNode: {fileID: 1564151846}
 --- !u!1 &1143001871
 GameObject:
   m_ObjectHideFlags: 0
@@ -2390,53 +2340,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedLimiter: 0
---- !u!1 &1308967852
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1308967853}
-  - component: {fileID: 1308967854}
-  m_Layer: 0
-  m_Name: Pitstop Node (6)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1308967853
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1308967852}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.48, y: 2.45, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 46625753}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1308967854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1308967852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4dfb8e911698e64ea5d50fb4b61b367, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nodeType: 1
-  maxSpeed: 0
-  minDistanceToReachWaypoint: 1
-  nextWaypointNode: {fileID: 1211893129}
 --- !u!1 &1330614132
 GameObject:
   m_ObjectHideFlags: 0
@@ -3084,53 +2987,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1564151845
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1564151847}
-  - component: {fileID: 1564151846}
-  m_Layer: 0
-  m_Name: Pitstop Node (5)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1564151846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1564151845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4dfb8e911698e64ea5d50fb4b61b367, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nodeType: 1
-  maxSpeed: 0
-  minDistanceToReachWaypoint: 1
-  nextWaypointNode: {fileID: 1308967854}
---- !u!4 &1564151847
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1564151845}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.49, y: 2.45, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 46625753}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1572200295
 GameObject:
   m_ObjectHideFlags: 0
@@ -3608,7 +3464,7 @@ MonoBehaviour:
   nodeType: 1
   maxSpeed: 0
   minDistanceToReachWaypoint: 1
-  nextWaypointNode: {fileID: 962705289}
+  nextWaypointNode: {fileID: 0}
 --- !u!1 &1910850936
 GameObject:
   m_ObjectHideFlags: 0
@@ -4398,10 +4254,6 @@ PrefabInstance:
       propertyPath: start
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1650617138, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-      propertyPath: fsmUpdateTimer
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 1306961039159378848, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -4448,7 +4300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1306961039159378861, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_Name
-      value: EnemyAI
+      value: CarAI
       objectReference: {fileID: 0}
     - target: {fileID: 1976005151611206090, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: pitstopExit
@@ -4458,10 +4310,6 @@ PrefabInstance:
       propertyPath: pitstopEntrance
       value: 
       objectReference: {fileID: 1211893128}
-    - target: {fileID: 4176774468855037465, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-      propertyPath: reactionTime
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 5559177605929681155, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: boxAssigned
       value: 

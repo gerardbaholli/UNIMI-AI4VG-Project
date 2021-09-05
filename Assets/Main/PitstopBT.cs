@@ -28,6 +28,8 @@ public class PitstopBT : MonoBehaviour
 
 	public void StartBehaviourTree()
 	{
+		BTCondition c0 = new BTCondition(NeedToPit);
+
 		BTCondition c1 = new BTCondition(IsOutsidePitlane);
 		BTAction a0 = new BTAction(GoToPitstop);
 		BTSequence s0 = new BTSequence(new IBTTask[] { c1, a0 });
@@ -51,7 +53,7 @@ public class PitstopBT : MonoBehaviour
 
 
 
-		BTSequence fs = new BTSequence(new IBTTask[] { d0, d1, a1, a2, d2 });
+		BTSequence fs = new BTSequence(new IBTTask[] { c0, d0, d1, a1, a2, d2 });
 
 		AI = new BehaviorTree(fs);
 
@@ -70,6 +72,11 @@ public class PitstopBT : MonoBehaviour
 
 
 	// ---------------- CONDITIONS ---------------- //
+	public bool NeedToPit()
+    {
+		return carStatus.tiresCondition <= 20;
+    }
+
 	public bool IsInsidePitlane()
 	{
 		return carStatus.GetActualLocation() == CarStatus.ActualLocation.Pitstop;

@@ -57,6 +57,8 @@ public class CarAIHandler : MonoBehaviour
         inputVector.x = TurnTowardTarget();
         inputVector.y = ApplyThrottleOrBrake(inputVector.x);
 
+        Debug.Log("CURRENT WAYPOINT: " + currentWaypoint.name);
+
         // Send the input to the car controller.
         carController.SetInputVector(inputVector);
     }

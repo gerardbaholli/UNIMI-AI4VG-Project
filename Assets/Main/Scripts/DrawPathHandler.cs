@@ -43,7 +43,7 @@ public class DrawPathHandler : MonoBehaviour
         //Iterate the list
         foreach (WaypointNode waypoint in waypointNodes)
         {
-            if (waypoint != null)
+            if (waypoint != null & waypoint.nextWaypointNode != null)
                 Gizmos.DrawLine(waypoint.transform.position, waypoint.nextWaypointNode.transform.position);
         }
 

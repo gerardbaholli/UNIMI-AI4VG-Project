@@ -23,7 +23,7 @@ public class WaypointNode : MonoBehaviour
         //Check and ensure that there is a waypoint assigned
         if (nextWaypointNode == null)
         {
-            Debug.LogError($"Waypoint {gameObject.name} is missing a nextWaypointNode. Please assign one in the inspector");
+            //Debug.LogError($"Waypoint {gameObject.name} is missing a nextWaypointNode. Please assign one in the inspector");
         }
 
     }
