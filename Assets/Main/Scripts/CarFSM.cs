@@ -44,7 +44,7 @@ public class CarFSM : MonoBehaviour
         FSMState pitstop = new FSMState();
         pitstop.stayActions.Add(Pit);
 
-        FSMTransition t1 = new FSMTransition(StartToRace);
+        FSMTransition t1 = new FSMTransition(StartRace);
         FSMTransition t2 = new FSMTransition(StopRace);
         FSMTransition t3 = new FSMTransition(GoPit);
         FSMTransition t4 = new FSMTransition(ExitPit);
@@ -71,7 +71,7 @@ public class CarFSM : MonoBehaviour
 
     // CONDITIONS
 
-    public bool StartToRace()
+    public bool StartRace()
     {
         return start;
     }
@@ -105,7 +105,7 @@ public class CarFSM : MonoBehaviour
     {
         Debug.Log("Race");
         raceBehaviorTree.StartBehaviourTree();
-        carStatus.tireConditions -= 0.9f;
+        carStatus.tireConditions -= 1f;
     }
 
     public void Stop()

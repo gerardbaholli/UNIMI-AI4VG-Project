@@ -28,19 +28,32 @@ public class PitstopBT : MonoBehaviour
 
 	public void StartBehaviourTree()
 	{
-		BTCondition c1 = new BTCondition(IsOutsidePitstop);
+		BTCondition c1 = new BTCondition(IsOutsidePitlane);
 		BTAction a0 = new BTAction(GoToPitstop);
-		BTSequence s2 = new BTSequence(new IBTTask[] { c1, a0 });
-		BTDecorator d0 = new BTDecoratorUntilFail(s2);
+		BTSequence s0 = new BTSequence(new IBTTask[] { c1, a0 });
+		BTDecorator d0 = new BTDecoratorUntilFail(s0);
+
+
+		BTCondition c2 = new BTCondition(IsNotInPitstopPosition);
+		BTAction a4 = new BTAction(FollowPitlane);
+		BTSequence s1 = new BTSequence(new IBTTask[] { c2, a4 });
+		BTDecorator d1 = new BTDecoratorUntilFail(s1);
+
 
 		BTAction a1 = new BTAction(TeleportToBox);
 		BTAction a2 = new BTAction(ChangeTires);
+
+
+		BTCondition c3 = new BTCondition(IsInsidePitlane);
 		BTAction a3 = new BTAction(BoxExit);
+		BTSequence s3 = new BTSequence(new IBTTask[] { c3, a3 });
+		BTDecorator d2 = new BTDecoratorUntilFail(s3);
 
 
-		BTSequence s1 = new BTSequence(new IBTTask[] { d0, a1, a2, a3 });
 
-		AI = new BehaviorTree(s1);
+		BTSequence fs = new BTSequence(new IBTTask[] { d0, d1, a1, a2, d2 });
+
+		AI = new BehaviorTree(fs);
 
 		StartCoroutine(Execute());
 	}
@@ -57,14 +70,24 @@ public class PitstopBT : MonoBehaviour
 
 
 	// ---------------- CONDITIONS ---------------- //
-	public bool IsInsidePitstop()
+	public bool IsInsidePitlane()
 	{
 		return carStatus.GetActualLocation() == CarStatus.ActualLocation.Pitstop;
 	}
 
-	public bool IsOutsidePitstop()
+	public bool IsOutsidePitlane()
     {
-		return !IsInsidePitstop();
+		return !IsInsidePitlane();
+    }
+
+	public bool IsInPitstopPosition()
+    {
+		return IsInsidePitlane() & (gameObject.transform.position == carStatus.GetBoxPosition());
+    }
+
+	public bool IsNotInPitstopPosition()
+    {
+		return !IsInPitstopPosition();
     }
 
 
@@ -75,70 +98,70 @@ public class PitstopBT : MonoBehaviour
 		Debug.Log("Going to pitstop");
 		carAIHandler.FollowRaceWaypoints();
 		//Debug.Log(IsPitstopAvailableToEnter());
-		if (IsPitstopAvailableToEnter())
+		if (IsPitlaneAvailableToEnter())
         {
 			carAIHandler.FollowPitstopWaypoints();
 		}
 		return true;
 	}
 
-	// TODO
-	public bool BoxEntrance()
-	{
-		//TODO: SEEK POS
-
-		ChangeTires();
-
-		Debug.Log("Box Entrance");
+	public bool FollowPitlane()
+    {
+		carAIHandler.FollowPitstopWaypoints();
+		if ((carStatus.GetBoxPosition() - gameObject.transform.position).magnitude < 0.5f)
+		{
+			return false;
+        }
 		return true;
+    }
+
+	// change something
+	public bool TeleportToBox()
+	{
+		Debug.Log("TELEPORTING");
+		Vector3 boxPosition = carStatus.GetBoxPosition();
+
+		gameObject.transform.position = boxPosition;
+		return gameObject.transform.position == carStatus.GetBoxPosition();
 	}
 
 	public bool ChangeTires()
 	{
-		Debug.Log("Changing tires, NOW: " + carStatus.GetTiresCondition());
+		Debug.Log("Changing tires: " + carStatus.GetTiresCondition());
 		//StartCoroutine(Wait());
 		carStatus.PutNewTires();
-		Debug.Log("Tires changed, NOW " + carStatus.GetTiresCondition());
 		return true;
 	}
 
-	private IEnumerator Wait()
-	{
-		int time = Random.Range(2, 6);
-		Debug.Log("Pitstop Time: " + time);
-		yield return new WaitForSeconds(time);
-	}
+    private IEnumerator Wait()
+    {
+        int time = Random.Range(2, 6);
+        Debug.Log("Pitstop Time: " + time);
+        yield return new WaitForSeconds(time);
+    }
 
-	public bool BoxExit()
+    public bool BoxExit()
 	{
 		Debug.Log("Box Exit");
 		carAIHandler.FollowPitstopWaypoints();
-		if (IsOutOfPitbox())
+		if (IsOutOfPitlane())
         {
 			carAIHandler.FollowRaceWaypoints();
         }
 		return true;
 	}
 
-	//TO BE DELETED
-	public bool TeleportToBox()
-    {
-		Debug.Log("TELEPORTING");
-		Vector3 boxPosition = carStatus.GetBoxPosition();
-
-		gameObject.transform.position = boxPosition;
-		return gameObject.transform.position == carStatus.GetBoxPosition();
-    }
+	
 
 	// OTHERS
-	private bool IsPitstopAvailableToEnter()
+	private bool IsPitlaneAvailableToEnter()
     {
 		return 
 			((pitstopEntrance.position - gameObject.transform.position).magnitude < 2f) &
 			Vector3.Dot(gameObject.transform.up.normalized, pitstopEntrance.position.normalized) > 0;
 	}
 
-	private bool IsOutOfPitbox()
+	private bool IsOutOfPitlane()
     {
 		return Vector3.Dot(gameObject.transform.up.normalized, pitstopExit.position.normalized) < 0;
     }

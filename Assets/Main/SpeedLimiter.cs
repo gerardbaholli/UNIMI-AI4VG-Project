@@ -8,23 +8,27 @@ public class SpeedLimiter : MonoBehaviour
 
     [SerializeField] Sensor speedLimiter;
 
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        CarController carController = collision.gameObject.GetComponentInParent<CarController>();
-        CarStatus carStatus = collision.gameObject.GetComponentInParent<CarStatus>();
-        if (carController != null)
+        CarController collisionCarController = collision.gameObject.GetComponentInParent<CarController>();
+        CarStatus collisionCarStatus = collision.gameObject.GetComponentInParent<CarStatus>();
+        if (collisionCarController != null)
         {
             if (speedLimiter == Sensor.entranceSpeedLimiter){
-                carController.SetMaxSpeed(1.2f);
-                carStatus.SetActualLocation(CarStatus.ActualLocation.Pitstop);
+                collisionCarController.SetMaxSpeed(1.2f);
+                collisionCarStatus.SetActualLocation(CarStatus.ActualLocation.Pitstop);
             }
             else if (speedLimiter == Sensor.exitSpeedLimiter)
             {
-                carController.SetMaxSpeed(2f);
-                carStatus.SetActualLocation(CarStatus.ActualLocation.Track);
+                collisionCarController.SetMaxSpeed(2f);
+                collisionCarStatus.SetActualLocation(CarStatus.ActualLocation.Track);
             }
         }
     }
 
-
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        
+    }
 }

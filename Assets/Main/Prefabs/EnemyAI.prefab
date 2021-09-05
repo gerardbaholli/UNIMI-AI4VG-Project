@@ -76,8 +76,8 @@ GameObject:
   - component: {fileID: 1306961039159378848}
   - component: {fileID: 1306961039159378851}
   - component: {fileID: 1306961039159378854}
-  - component: {fileID: 1306961039159378850}
   - component: {fileID: 1306961039159378855}
+  - component: {fileID: 1306961039159378850}
   - component: {fileID: 1650617138}
   - component: {fileID: 5559177605929681155}
   - component: {fileID: 1976005151611206090}
@@ -177,6 +177,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1306961039159378855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306961039159378861}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cda0e6bc4985904fb815bd5fccb2569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 20
+  isAvoidingCars: 1
 --- !u!114 &1306961039159378850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,20 +207,6 @@ MonoBehaviour:
   accelerationFactor: 3
   turnFactor: 3.5
   maxSpeed: 1.9
---- !u!114 &1306961039159378855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306961039159378861}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cda0e6bc4985904fb815bd5fccb2569, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxSpeed: 20
-  isAvoidingCars: 1
 --- !u!114 &1650617138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,3 +265,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 342de29b64d22374ca26bf5957c710cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reactionTime: 0.1
