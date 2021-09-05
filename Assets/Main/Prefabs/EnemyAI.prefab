@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 1650617138}
   - component: {fileID: 5559177605929681155}
   - component: {fileID: 1976005151611206090}
+  - component: {fileID: 4176774468855037465}
   m_Layer: 8
   m_Name: EnemyAI
   m_TagString: AI
@@ -143,7 +144,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: e21d07e7c75e04cc18e08a31a5577de6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -206,11 +207,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 20
   isAvoidingCars: 1
-  pitstopWaypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &1650617138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,4 +250,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f4aa5acd0a1764cb46be468a53a05b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reactionTime: 0.02
+  reactionTime: 0.1
+  pitstopEntrance: {fileID: 0}
+  pitstopExit: {fileID: 0}
+--- !u!114 &4176774468855037465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306961039159378861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 342de29b64d22374ca26bf5957c710cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

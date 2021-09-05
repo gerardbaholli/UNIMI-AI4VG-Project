@@ -19,7 +19,7 @@ public class CarFSM : MonoBehaviour
     public bool pitstop = false; // TO BE REMOVED
 
     // BEHAVIOUR TREES
-    PitstopBT raceBehaviorTree; // CHANGE IN RaceBehaviorTree
+    RaceBT raceBehaviorTree;
     PitstopBT pitstopBehaviorTree;
 
 
@@ -29,7 +29,7 @@ public class CarFSM : MonoBehaviour
         carAIHandler = GetComponent<CarAIHandler>();
         carController = GetComponent<CarController>();
         carStatus = GetComponent<CarStatus>();
-        raceBehaviorTree = GetComponent<PitstopBT>();
+        raceBehaviorTree = GetComponent<RaceBT>();
         pitstopBehaviorTree = GetComponent<PitstopBT>();
     }
 
@@ -104,8 +104,8 @@ public class CarFSM : MonoBehaviour
     public void Race()
     {
         Debug.Log("Race");
-        carAIHandler.FollowRaceWaypoints();
-        carStatus.tireConditions -= 0.15f;
+        raceBehaviorTree.StartBehaviourTree();
+        carStatus.tireConditions -= 0.9f;
     }
 
     public void Stop()
@@ -116,13 +116,7 @@ public class CarFSM : MonoBehaviour
     public void Pit()
     {
         Debug.Log("Pit");
-        //carAIHandler.FollowPitstopWaypoints();
-
-        // Esegue il BT di questo stato
         pitstopBehaviorTree.StartBehaviourTree();
-
-        //gameObject.transform.position = carStatus.GetBoxPosition();
-        //carStatus.tireConditions += 0.15f;
     }
 
 

@@ -7,14 +7,16 @@ public class PitstopBT : MonoBehaviour
 {
 	SystemStatus systemStatus;
 
+	[SerializeField] float reactionTime = 0.05f;
+	BehaviorTree AI;
+
 	CarAIHandler carAIHandler;
 	CarController carController;
 	CarStatus carStatus;
 
 	[SerializeField] Transform pitstopEntrance;
+	[SerializeField] Transform pitstopExit;
 
-	[SerializeField] float reactionTime = 0.05f;
-	BehaviorTree AI;
 
 	void Start()
 	{
@@ -33,9 +35,10 @@ public class PitstopBT : MonoBehaviour
 
 		BTAction a1 = new BTAction(TeleportToBox);
 		BTAction a2 = new BTAction(ChangeTires);
+		BTAction a3 = new BTAction(BoxExit);
 
 
-		BTSequence s1 = new BTSequence(new IBTTask[] { d0, a1, a2 });
+		BTSequence s1 = new BTSequence(new IBTTask[] { d0, a1, a2, a3 });
 
 		AI = new BehaviorTree(s1);
 
@@ -71,8 +74,8 @@ public class PitstopBT : MonoBehaviour
     {
 		Debug.Log("Going to pitstop");
 		carAIHandler.FollowRaceWaypoints();
-		Debug.Log((pitstopEntrance.position - gameObject.transform.position).magnitude < 2f);
-		if ((pitstopEntrance.position - gameObject.transform.position).magnitude < 2f)
+		//Debug.Log(IsPitstopAvailableToEnter());
+		if (IsPitstopAvailableToEnter())
         {
 			carAIHandler.FollowPitstopWaypoints();
 		}
@@ -109,6 +112,11 @@ public class PitstopBT : MonoBehaviour
 	public bool BoxExit()
 	{
 		Debug.Log("Box Exit");
+		carAIHandler.FollowPitstopWaypoints();
+		if (IsOutOfPitbox())
+        {
+			carAIHandler.FollowRaceWaypoints();
+        }
 		return true;
 	}
 
@@ -120,6 +128,19 @@ public class PitstopBT : MonoBehaviour
 
 		gameObject.transform.position = boxPosition;
 		return gameObject.transform.position == carStatus.GetBoxPosition();
+    }
+
+	// OTHERS
+	private bool IsPitstopAvailableToEnter()
+    {
+		return 
+			((pitstopEntrance.position - gameObject.transform.position).magnitude < 2f) &
+			Vector3.Dot(gameObject.transform.up.normalized, pitstopEntrance.position.normalized) > 0;
+	}
+
+	private bool IsOutOfPitbox()
+    {
+		return Vector3.Dot(gameObject.transform.up.normalized, pitstopExit.position.normalized) < 0;
     }
 
 }

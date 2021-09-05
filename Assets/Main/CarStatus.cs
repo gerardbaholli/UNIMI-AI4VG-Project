@@ -54,4 +54,5 @@ public class CarStatus : MonoBehaviour
         tireConditions = 100f;
         Debug.Log("Putted new tires!!!");
     }
+
 }

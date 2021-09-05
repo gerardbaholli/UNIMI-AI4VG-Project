@@ -4438,30 +4438,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -270.27
       objectReference: {fileID: 0}
-    - target: {fileID: 1306961039159378855, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-      propertyPath: pitstopWaypoints.Array.data[0]
-      value: 
-      objectReference: {fileID: 1211893129}
-    - target: {fileID: 1306961039159378855, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-      propertyPath: pitstopWaypoints.Array.data[1]
-      value: 
-      objectReference: {fileID: 1856301588}
-    - target: {fileID: 1306961039159378855, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-      propertyPath: pitstopWaypoints.Array.data[2]
-      value: 
-      objectReference: {fileID: 1340555188}
-    - target: {fileID: 1306961039159378855, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-      propertyPath: pitstopWaypoints.Array.data[3]
-      value: 
-      objectReference: {fileID: 1862052164}
     - target: {fileID: 1306961039159378861, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_Name
       value: EnemyAI
       objectReference: {fileID: 0}
     - target: {fileID: 1976005151611206090, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
+      propertyPath: pitstopExit
+      value: 
+      objectReference: {fileID: 1862052163}
+    - target: {fileID: 1976005151611206090, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: pitstopEntrance
       value: 
       objectReference: {fileID: 1211893128}
+    - target: {fileID: 4176774468855037465, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
+      propertyPath: reactionTime
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5559177605929681155, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: boxAssigned
       value: 

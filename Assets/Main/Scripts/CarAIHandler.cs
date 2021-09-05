@@ -22,7 +22,6 @@ public class CarAIHandler : MonoBehaviour
     WaypointNode[] allWayPoints;
     List<WaypointNode> raceNodes;
     List<WaypointNode> pitstopNodes;
-    [SerializeField] WaypointNode[] pitstopWaypoints;
 
     // Colliders
     PolygonCollider2D polygonCollider2D;
