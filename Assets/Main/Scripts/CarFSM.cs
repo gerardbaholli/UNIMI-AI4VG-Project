@@ -105,7 +105,7 @@ public class CarFSM : MonoBehaviour
     {
         Debug.Log("Race");
         raceBehaviorTree.StartBehaviourTree();
-        carStatus.tiresCondition -= 1f;
+        carStatus.ConsumesTires();
     }
 
     public void Stop()

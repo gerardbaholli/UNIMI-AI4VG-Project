@@ -236,7 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxAssigned: {fileID: 0}
   actualLocation: 0
-  tireConditions: 100
+  tiresCondition: 100
   needToPit: 0
 --- !u!114 &1976005151611206090
 MonoBehaviour:

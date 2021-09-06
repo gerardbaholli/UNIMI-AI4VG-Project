@@ -7,6 +7,7 @@ public class CarStatus : MonoBehaviour
     public enum ActualLocation { Track, Pitstop };
 
     [SerializeField] GameObject boxAssigned;
+    [SerializeField] float tiresWear;
 
     public ActualLocation actualLocation = ActualLocation.Track;
     public float tiresCondition = 100f;
@@ -55,4 +56,8 @@ public class CarStatus : MonoBehaviour
         Debug.Log("Putted new tires!!!");
     }
 
+    public void ConsumesTires()
+    {
+        tiresCondition -= tiresWear;
+    }
 }

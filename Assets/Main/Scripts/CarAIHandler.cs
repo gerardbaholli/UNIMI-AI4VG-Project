@@ -50,22 +50,20 @@ public class CarAIHandler : MonoBehaviour
         polygonCollider2D = GetComponentInChildren<PolygonCollider2D>();
     }
 
+
     private void FixedUpdate()
     {
-        Vector2 inputVector = Vector2.zero;
+        //Vector2 inputVector = Vector2.zero;
 
-        inputVector.x = TurnTowardTarget();
-        inputVector.y = ApplyThrottleOrBrake(inputVector.x);
+        //inputVector.x = TurnTowardTarget();
+        //inputVector.y = ApplyThrottleOrBrake(inputVector.x);
 
-        Debug.Log("CURRENT WAYPOINT: " + currentWaypoint.name);
-
-        // Send the input to the car controller.
-        carController.SetInputVector(inputVector);
+        //// Send the input to the car controller.
+        //carController.SetInputVector(inputVector);
     }
 
     public void FollowRaceWaypoints()
     {
-        // (currentWaypoint == null || currentWaypoint.nextWaypointNode.nodeType == WaypointNode.NodeType.pitstopNode)
         if (currentWaypoint == null)
         {
             currentWaypoint = FindClosestRaceWaypoint();
@@ -74,8 +72,8 @@ public class CarAIHandler : MonoBehaviour
 
         if (currentWaypoint != null)
         {
-            //Debug.Log(Vector3.Dot(currentWaypoint.transform.position.normalized, gameObject.transform.up.normalized));
-            if (Vector3.Dot(currentWaypoint.transform.position.normalized, gameObject.transform.up.normalized) < -0.2f)
+            // Se il currentWaypoint sta dietro allora va a quello successivo 
+            if (Vector3.Dot(currentWaypoint.transform.position.normalized, gameObject.transform.up.normalized) < -0.4f)
             {
                 currentWaypoint = currentWaypoint.nextWaypointNode;
             }
@@ -84,7 +82,7 @@ public class CarAIHandler : MonoBehaviour
 
             float distanceToWaypoint = (targetPosition - transform.position).magnitude;
 
-            if (distanceToWaypoint > 2f)
+            if (distanceToWaypoint > 3f)
             {
                 Vector3 nearestPointOnTheWayPointLine = FindNearestPointOnLine(previousWaypoint.transform.position, currentWaypoint.transform.position, transform.position);
 
@@ -111,13 +109,25 @@ public class CarAIHandler : MonoBehaviour
 
     private WaypointNode FindClosestRaceWaypoint()
     {
-        return raceNodes
-            .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
-            .FirstOrDefault();
+        float minDistance = (raceNodes[0].transform.position - gameObject.transform.position).magnitude;
+        WaypointNode minDistanceNode = raceNodes[0];
+
+        foreach (WaypointNode n in raceNodes)
+        {
+            if (minDistance > (n.transform.position - gameObject.transform.position).magnitude)
+            {
+                minDistance = (n.transform.position - gameObject.transform.position).magnitude;
+                minDistanceNode = n;
+            }
+        }
+
+        //Debug.Log("MIN DISTANCE WAYPOINT IS: " + minDistanceNode.name);
+        return minDistanceNode;
     }
 
     public void FollowPitstopWaypoints()
     {
+
         if (currentWaypoint == null || currentWaypoint.nextWaypointNode.nodeType == WaypointNode.NodeType.raceNode)
         {
             currentWaypoint = FindClosestPitstopWaypoint();
@@ -126,6 +136,7 @@ public class CarAIHandler : MonoBehaviour
 
         if (currentWaypoint != null)
         {
+            // Se il currentWaypoint sta dietro allora va a quello successivo 
             if (Vector3.Dot(currentWaypoint.transform.position, currentWaypoint.nextWaypointNode.transform.position) < 0.2f)
             {
                 currentWaypoint = currentWaypoint.nextWaypointNode;
@@ -153,8 +164,17 @@ public class CarAIHandler : MonoBehaviour
                 else maxSpeed = 1000;
 
                 previousWaypoint = currentWaypoint;
-                currentWaypoint = currentWaypoint.nextWaypointNode;
+
+                if (currentWaypoint.nextWaypointNode == null)
+                {
+                    currentWaypoint = FindClosestRaceWaypoint();
+                } else
+                {
+                    currentWaypoint = currentWaypoint.nextWaypointNode;
+                }
             }
+
+
         }
 
         Move();
@@ -173,6 +193,8 @@ public class CarAIHandler : MonoBehaviour
 
         inputVector.x = TurnTowardTarget();
         inputVector.y = ApplyThrottleOrBrake(inputVector.x);
+
+        Debug.Log("CURRENT WAYPOINT: " + currentWaypoint.name);
 
         // Send the input to the car controller.
         carController.SetInputVector(inputVector);
@@ -304,6 +326,17 @@ public class CarAIHandler : MonoBehaviour
 
         // We need assign a default value if we didn't hit any cars before we exit the function. 
         newVectorToTarget = vectorToTarget;
+    }
+
+
+
+    private void PrintAllRaceNodeDistances()
+    {
+        foreach (WaypointNode n in raceNodes)
+        {
+            Debug.Log("Node: " + n.name + " # Distance: " +
+                (n.transform.position - gameObject.transform.position).magnitude);
+        }
     }
 
 }
