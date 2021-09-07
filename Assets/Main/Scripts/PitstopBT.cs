@@ -17,7 +17,6 @@ public class PitstopBT : MonoBehaviour
 	[SerializeField] Transform pitstopEntrance;
 	[SerializeField] Transform pitstopExit;
 
-
 	void Start()
 	{
 		systemStatus = FindObjectOfType<SystemStatus>();
@@ -31,29 +30,25 @@ public class PitstopBT : MonoBehaviour
 		BTCondition c0 = new BTCondition(NeedToPit);
 
 		BTCondition c1 = new BTCondition(IsOutsidePitlane);
-		BTAction a0 = new BTAction(GoToPitstop);
+		BTAction a0 = new BTAction(EnterPitlane);
 		BTSequence s0 = new BTSequence(new IBTTask[] { c1, a0 });
 		BTDecorator d0 = new BTDecoratorUntilFail(s0);
-
 
 		BTCondition c2 = new BTCondition(IsNotInPitstopPosition);
 		BTAction a4 = new BTAction(FollowPitlane);
 		BTSequence s1 = new BTSequence(new IBTTask[] { c2, a4 });
 		BTDecorator d1 = new BTDecoratorUntilFail(s1);
 
-
 		BTAction a1 = new BTAction(TeleportToBox);
 		BTAction a2 = new BTAction(ChangeTires);
 
-
 		BTCondition c3 = new BTCondition(IsInsidePitlane);
-		BTAction a3 = new BTAction(BoxExit);
+		BTAction a3 = new BTAction(ExitPitlane);
 		BTSequence s3 = new BTSequence(new IBTTask[] { c3, a3 });
 		BTDecorator d2 = new BTDecoratorUntilFail(s3);
 
-
-
 		BTSequence fs = new BTSequence(new IBTTask[] { c0, d0, d1, a1, a2, d2 });
+
 
 		AI = new BehaviorTree(fs);
 
@@ -70,7 +65,6 @@ public class PitstopBT : MonoBehaviour
 
 
 
-
 	// ---------------- CONDITIONS ---------------- //
 	public bool NeedToPit()
     {
@@ -79,7 +73,7 @@ public class PitstopBT : MonoBehaviour
 
 	public bool IsInsidePitlane()
 	{
-		return carStatus.GetActualLocation() == CarStatus.ActualLocation.Pitstop;
+		return carStatus.GetActualLocation() == CarStatus.ActualLocation.Pitlane;
 	}
 
 	public bool IsOutsidePitlane()
@@ -99,22 +93,24 @@ public class PitstopBT : MonoBehaviour
 
 
 
+
 	// ---------------- ACTIONS ---------------- //
-	public bool GoToPitstop()
+	public bool EnterPitlane()
     {
-		Debug.Log("Going to pitstop");
+		Debug.Log("Enter Pitlane");
 		carAIHandler.FollowRaceWaypoints();
-		//Debug.Log(IsPitstopAvailableToEnter());
+
 		if (IsPitlaneAvailableToEnter())
         {
-			carAIHandler.FollowPitstopWaypoints();
+			carAIHandler.FollowPitlaneWaypoints();
 		}
+
 		return true;
 	}
 
 	public bool FollowPitlane()
     {
-		carAIHandler.FollowPitstopWaypoints();
+		carAIHandler.FollowPitlaneWaypoints();
 		if ((carStatus.GetBoxPosition() - gameObject.transform.position).magnitude < 0.5f)
 		{
 			return false;
@@ -122,7 +118,6 @@ public class PitstopBT : MonoBehaviour
 		return true;
     }
 
-	// change something
 	public bool TeleportToBox()
 	{
 		Debug.Log("TELEPORTING");
@@ -140,27 +135,21 @@ public class PitstopBT : MonoBehaviour
 		return true;
 	}
 
-    private IEnumerator Wait()
-    {
-        int time = Random.Range(2, 6);
-        Debug.Log("Pitstop Time: " + time);
-        yield return new WaitForSeconds(time);
-    }
-
-    public bool BoxExit()
+    public bool ExitPitlane()
 	{
-		Debug.Log("Box Exit");
-		carAIHandler.FollowPitstopWaypoints();
+		Debug.Log("Exit Pitlane");
+		carAIHandler.FollowPitlaneWaypoints();
 		if (IsOutOfPitlane())
         {
+			carAIHandler.SetCurrentWaypoint(null);
 			carAIHandler.FollowRaceWaypoints();
         }
 		return true;
 	}
 
-	
 
-	// OTHERS
+
+	// ----------------------------------------- //
 	private bool IsPitlaneAvailableToEnter()
     {
 		return 

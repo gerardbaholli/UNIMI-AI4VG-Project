@@ -22,7 +22,6 @@ public class CarFSM : MonoBehaviour
     RaceBT raceBehaviorTree;
     PitstopBT pitstopBehaviorTree;
 
-
     private void Awake()
     {
         systemStatus = FindObjectOfType<SystemStatus>();
@@ -69,8 +68,7 @@ public class CarFSM : MonoBehaviour
     }
 
 
-    // CONDITIONS
-
+    // --------------- CONDITIONS --------------- //
     public bool StartRace()
     {
         return start;
@@ -99,18 +97,18 @@ public class CarFSM : MonoBehaviour
         return false;
     }
 
-    // ACTIONS
+
+    // --------------- ACTIONS --------------- //
+    public void Stop()
+    {
+        Debug.Log("Stop");
+    }
 
     public void Race()
     {
         Debug.Log("Race");
         raceBehaviorTree.StartBehaviourTree();
         carStatus.ConsumesTires();
-    }
-
-    public void Stop()
-    {
-        Debug.Log("Stop");
     }
 
     public void Pit()

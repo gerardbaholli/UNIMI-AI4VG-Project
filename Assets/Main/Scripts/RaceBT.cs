@@ -47,5 +47,4 @@ public class RaceBT : MonoBehaviour
 		return true;
 	}
 
-
 }

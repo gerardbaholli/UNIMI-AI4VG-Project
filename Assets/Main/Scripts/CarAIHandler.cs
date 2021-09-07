@@ -11,7 +11,6 @@ public class CarAIHandler : MonoBehaviour
 
     // Local variables
     Vector3 targetPosition = Vector3.zero;
-    //Transform targetTransform = null;
 
     // Avoidance
     Vector2 avoidanceVectorLerped = Vector3.zero;
@@ -29,6 +28,7 @@ public class CarAIHandler : MonoBehaviour
     // Components
     CarController carController;
 
+    
     private void Awake()
     {
         carController = GetComponent<CarController>();
@@ -41,7 +41,8 @@ public class CarAIHandler : MonoBehaviour
             if (node.nodeType == WaypointNode.NodeType.raceNode)
             {
                 raceNodes.Add(node);
-            } else if (node.nodeType == WaypointNode.NodeType.pitstopNode)
+            }
+            else if (node.nodeType == WaypointNode.NodeType.pitstopNode)
             {
                 pitstopNodes.Add(node);
             }
@@ -50,16 +51,9 @@ public class CarAIHandler : MonoBehaviour
         polygonCollider2D = GetComponentInChildren<PolygonCollider2D>();
     }
 
-
-    private void FixedUpdate()
+    public void SetCurrentWaypoint(WaypointNode value)
     {
-        //Vector2 inputVector = Vector2.zero;
-
-        //inputVector.x = TurnTowardTarget();
-        //inputVector.y = ApplyThrottleOrBrake(inputVector.x);
-
-        //// Send the input to the car controller.
-        //carController.SetInputVector(inputVector);
+        currentWaypoint = value;
     }
 
     public void FollowRaceWaypoints()
@@ -72,24 +66,17 @@ public class CarAIHandler : MonoBehaviour
 
         if (currentWaypoint != null)
         {
-            // Se il currentWaypoint sta dietro allora va a quello successivo 
-            if (Vector3.Dot(currentWaypoint.transform.position.normalized, gameObject.transform.up.normalized) < -0.4f)
-            {
-                currentWaypoint = currentWaypoint.nextWaypointNode;
-            }
+            ChangeWaypointIfBehindCar();
 
             targetPosition = currentWaypoint.transform.position;
-
             float distanceToWaypoint = (targetPosition - transform.position).magnitude;
 
             if (distanceToWaypoint > 3f)
             {
                 Vector3 nearestPointOnTheWayPointLine = FindNearestPointOnLine(previousWaypoint.transform.position, currentWaypoint.transform.position, transform.position);
-
-                float segments = distanceToWaypoint / 2f;  
+                float segments = distanceToWaypoint / 2f;
 
                 targetPosition = (targetPosition + nearestPointOnTheWayPointLine * segments) / (segments + 1);
-
                 Debug.DrawLine(transform.position, targetPosition, Color.white);
             }
 
@@ -104,43 +91,21 @@ public class CarAIHandler : MonoBehaviour
             }
         }
 
-        Move();
+        ApplyMovement();
     }
 
-    private WaypointNode FindClosestRaceWaypoint()
-    {
-        float minDistance = (raceNodes[0].transform.position - gameObject.transform.position).magnitude;
-        WaypointNode minDistanceNode = raceNodes[0];
-
-        foreach (WaypointNode n in raceNodes)
-        {
-            if (minDistance > (n.transform.position - gameObject.transform.position).magnitude)
-            {
-                minDistance = (n.transform.position - gameObject.transform.position).magnitude;
-                minDistanceNode = n;
-            }
-        }
-
-        //Debug.Log("MIN DISTANCE WAYPOINT IS: " + minDistanceNode.name);
-        return minDistanceNode;
-    }
-
-    public void FollowPitstopWaypoints()
+    public void FollowPitlaneWaypoints()
     {
 
-        if (currentWaypoint == null || currentWaypoint.nextWaypointNode.nodeType == WaypointNode.NodeType.raceNode)
+        if (currentWaypoint == null || (currentWaypoint.nextWaypointNode != null && currentWaypoint.nextWaypointNode.nodeType == WaypointNode.NodeType.raceNode))
         {
-            currentWaypoint = FindClosestPitstopWaypoint();
+            currentWaypoint = FindClosestPitlaneWaypoint();
             previousWaypoint = currentWaypoint;
         }
 
         if (currentWaypoint != null)
         {
-            // Se il currentWaypoint sta dietro allora va a quello successivo 
-            if (Vector3.Dot(currentWaypoint.transform.position, currentWaypoint.nextWaypointNode.transform.position) < 0.2f)
-            {
-                currentWaypoint = currentWaypoint.nextWaypointNode;
-            }
+            ChangeWaypointIfBehindCar();
 
             targetPosition = currentWaypoint.transform.position;
 
@@ -177,17 +142,34 @@ public class CarAIHandler : MonoBehaviour
 
         }
 
-        Move();
+        ApplyMovement();
     }
 
-    private WaypointNode FindClosestPitstopWaypoint()
+    private WaypointNode FindClosestRaceWaypoint()
+    {
+        float minDistance = (raceNodes[0].transform.position - gameObject.transform.position).magnitude;
+        WaypointNode minDistanceNode = raceNodes[0];
+
+        foreach (WaypointNode n in raceNodes)
+        {
+            if (minDistance > (n.transform.position - gameObject.transform.position).magnitude)
+            {
+                minDistance = (n.transform.position - gameObject.transform.position).magnitude;
+                minDistanceNode = n;
+            }
+        }
+
+        return minDistanceNode;
+    }
+
+    private WaypointNode FindClosestPitlaneWaypoint()
     {
         return pitstopNodes
             .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
             .FirstOrDefault();
     }
 
-    private void Move()
+    private void ApplyMovement()
     {
         Vector2 inputVector = Vector2.zero;
 
@@ -196,7 +178,6 @@ public class CarAIHandler : MonoBehaviour
 
         Debug.Log("CURRENT WAYPOINT: " + currentWaypoint.name);
 
-        // Send the input to the car controller.
         carController.SetInputVector(inputVector);
     }
 
@@ -328,7 +309,13 @@ public class CarAIHandler : MonoBehaviour
         newVectorToTarget = vectorToTarget;
     }
 
-
+    private void ChangeWaypointIfBehindCar()
+    {
+        if (Vector3.Dot(currentWaypoint.transform.position.normalized, gameObject.transform.up.normalized) < -0.4f)
+        {
+            currentWaypoint = currentWaypoint.nextWaypointNode;
+        }
+    }
 
     private void PrintAllRaceNodeDistances()
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CarStatus : MonoBehaviour
 {
-    public enum ActualLocation { Track, Pitstop };
+    public enum ActualLocation { Track, Pitlane };
 
     [SerializeField] GameObject boxAssigned;
     [SerializeField] float tiresWear;
@@ -13,21 +13,17 @@ public class CarStatus : MonoBehaviour
     public float tiresCondition = 100f;
     public bool needToPit = false;
 
-    private void Start()
-    {
-
-    }
-
     private void FixedUpdate()
     {
+        UpdatePitStatus();
+    }
+
+    private void UpdatePitStatus()
+    {
         if (tiresCondition < 20)
-        {
             needToPit = true;
-        }
         else
-        {
             needToPit = false;
-        }
     }
 
     public Vector3 GetBoxPosition()
@@ -53,11 +49,11 @@ public class CarStatus : MonoBehaviour
     public void PutNewTires()
     {
         tiresCondition = 100f;
-        Debug.Log("Putted new tires!!!");
     }
 
     public void ConsumesTires()
     {
         tiresCondition -= tiresWear;
     }
+
 }

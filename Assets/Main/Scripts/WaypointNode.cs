@@ -14,5 +14,4 @@ public class WaypointNode : MonoBehaviour
 
     [SerializeField] public WaypointNode nextWaypointNode;
 
-
 }

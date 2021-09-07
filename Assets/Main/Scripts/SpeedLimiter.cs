@@ -17,7 +17,7 @@ public class SpeedLimiter : MonoBehaviour
         {
             if (speedLimiter == Sensor.entranceSpeedLimiter){
                 collisionCarController.SetMaxSpeed(1.2f);
-                collisionCarStatus.SetActualLocation(CarStatus.ActualLocation.Pitstop);
+                collisionCarStatus.SetActualLocation(CarStatus.ActualLocation.Pitlane);
             }
             else if (speedLimiter == Sensor.exitSpeedLimiter)
             {
