@@ -301,11 +301,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1306961039159378848, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.49
+      value: -2.381
       objectReference: {fileID: 0}
     - target: {fileID: 1306961039159378848, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.42
+      value: -2.421
       objectReference: {fileID: 0}
     - target: {fileID: 1306961039159378848, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2527,11 +2527,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1306961039159378848, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.82
+      value: -2.796
       objectReference: {fileID: 0}
     - target: {fileID: 1306961039159378848, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.77
+      value: -2.814
       objectReference: {fileID: 0}
     - target: {fileID: 1306961039159378848, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2655,7 +2655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1306961039159378848, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.32
+      value: -3.255
       objectReference: {fileID: 0}
     - target: {fileID: 1306961039159378848, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2705,10 +2705,6 @@ PrefabInstance:
       propertyPath: pitstopEntrance
       value: 
       objectReference: {fileID: 1211893128}
-    - target: {fileID: 5559177605929681155, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-      propertyPath: tiresWear
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 5559177605929681155, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: boxAssigned
       value: 

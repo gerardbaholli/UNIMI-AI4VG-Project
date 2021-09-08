@@ -145,7 +145,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: e21d07e7c75e04cc18e08a31a5577de6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 64c923fa216f02542af9c85f9bc788ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxAssigned: {fileID: 0}
-  tiresWear: 0.1
+  tiresWear: 0.5
   actualLocation: 0
   tiresCondition: 100
   needToPit: 0
