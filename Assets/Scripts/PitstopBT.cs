@@ -120,11 +120,12 @@ public class PitstopBT : MonoBehaviour
 
 	public bool TeleportToBox()
 	{
-		Debug.Log("TELEPORTING");
+		Debug.Log("Teleporting to box");
 		Vector3 boxPosition = carStatus.GetBoxPosition();
 
+		carAIHandler.StopCar();
 		gameObject.transform.position = boxPosition;
-		return gameObject.transform.position == carStatus.GetBoxPosition();
+		return true;
 	}
 
 	public bool ChangeTires()

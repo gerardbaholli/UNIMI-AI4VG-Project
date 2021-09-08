@@ -65,7 +65,7 @@ public class CarAIHandler : MonoBehaviour
 
         if (currentWaypoint != null)
         {
-            ChangeWaypointIfBehindCar();
+            ChangeWaypointIfBehindCar(-0.4f);
 
             targetPosition = currentWaypoint.transform.position;
             float distanceToWaypoint = (targetPosition - transform.position).magnitude;
@@ -104,14 +104,15 @@ public class CarAIHandler : MonoBehaviour
 
         if (currentWaypoint != null)
         {
-            ChangeWaypointIfBehindCar();
+            ChangeWaypointIfBehindCar(-0.2f);
 
             targetPosition = currentWaypoint.transform.position;
 
             float distanceToWaypoint = (targetPosition - transform.position).magnitude;
 
-            if (distanceToWaypoint > 2f)
+            if (distanceToWaypoint > 0.1f)
             {
+                Debug.Log("My previous is: " + previousWaypoint.name + " @@@ My target is: " + currentWaypoint.name);
                 Vector3 nearestPointOnTheWayPointLine = FindNearestPointOnLine(previousWaypoint.transform.position, currentWaypoint.transform.position, transform.position);
 
                 float segments = distanceToWaypoint / 2f;
@@ -308,9 +309,12 @@ public class CarAIHandler : MonoBehaviour
         newVectorToTarget = vectorToTarget;
     }
 
-    private void ChangeWaypointIfBehindCar()
+    private void ChangeWaypointIfBehindCar(float value)
     {
-        if (Vector3.Dot(currentWaypoint.transform.position.normalized, gameObject.transform.up.normalized) < -0.4f)
+        //Debug.Log("Waypoint changed");
+        //Debug.Log("currentWaypoint: " + currentWaypoint.name + " " +  currentWaypoint.transform.position + " @@@ gameObject: " + gameObject.transform.up);
+        Debug.Log("DOT: " + Vector3.Dot((currentWaypoint.transform.position - gameObject.transform.position).normalized, gameObject.transform.up.normalized));
+        if (Vector3.Dot((currentWaypoint.transform.position - gameObject.transform.position).normalized, gameObject.transform.up.normalized) < value)
         {
             currentWaypoint = currentWaypoint.nextWaypointNode;
         }
