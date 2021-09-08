@@ -37,10 +37,8 @@ public class DrawPathHandler : MonoBehaviour
         if (transformRootObject == null)
             return;
 
-        //Get all Waypoints
         waypointNodes = transformRootObject.GetComponentsInChildren<WaypointNode>();
 
-        //Iterate the list
         foreach (WaypointNode waypoint in waypointNodes)
         {
             if (waypoint != null & waypoint.nextWaypointNode != null)

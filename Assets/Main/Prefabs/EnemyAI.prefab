@@ -144,7 +144,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: e21d07e7c75e04cc18e08a31a5577de6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cda0e6bc4985904fb815bd5fccb2569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 20
+  throttleLevel: 16
   isAvoidingCars: 1
 --- !u!114 &1306961039159378850
 MonoBehaviour:
@@ -206,6 +206,7 @@ MonoBehaviour:
   driftFactor: 0.95
   accelerationFactor: 3
   turnFactor: 3.5
+  speed: 1.9
   maxSpeed: 1.9
 --- !u!114 &1650617138
 MonoBehaviour:
@@ -235,9 +236,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxAssigned: {fileID: 0}
+  tiresWear: 0.1
   actualLocation: 0
   tiresCondition: 100
   needToPit: 0
+  wetTiresOn: 0
 --- !u!114 &1976005151611206090
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,22 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SystemStatus : MonoBehaviour
+public class RaceStatus : MonoBehaviour
 {
 
     [SerializeField] public bool start = false;
     [SerializeField] public bool saferyCar = false;
+    [SerializeField] public float safetyCarMaxSpeed = 1.0f;
     [SerializeField] public bool redFlag = false;
-
-    private void Start()
-    {
-        
-    }
-
-    private void FixedUpdate()
-    {
-        
-    }
 
     public void DeliverSafetyCar()
     {

@@ -5,9 +5,8 @@ using System.Linq;
 
 public class CarAIHandler : MonoBehaviour
 {
-    [Header("AI settings")]
-    public float maxSpeed = 16;
-    public bool isAvoidingCars = true;
+    [SerializeField] float throttleLevel = 16;
+    [SerializeField] bool isAvoidingCars = true;
 
     // Local variables
     Vector3 targetPosition = Vector3.zero;
@@ -83,8 +82,8 @@ public class CarAIHandler : MonoBehaviour
             if (distanceToWaypoint <= currentWaypoint.minDistanceToReachWaypoint)
             {
                 if (currentWaypoint.maxSpeed > 0)
-                    maxSpeed = currentWaypoint.maxSpeed;
-                else maxSpeed = 1000;
+                    throttleLevel = currentWaypoint.maxSpeed;
+                else throttleLevel = 1000;
 
                 previousWaypoint = currentWaypoint;
                 currentWaypoint = currentWaypoint.nextWaypointNode;
@@ -125,8 +124,8 @@ public class CarAIHandler : MonoBehaviour
             if (distanceToWaypoint <= currentWaypoint.minDistanceToReachWaypoint)
             {
                 if (currentWaypoint.maxSpeed > 0)
-                    maxSpeed = currentWaypoint.maxSpeed;
-                else maxSpeed = 1000;
+                    throttleLevel = currentWaypoint.maxSpeed;
+                else throttleLevel = 1000;
 
                 previousWaypoint = currentWaypoint;
 
@@ -176,7 +175,7 @@ public class CarAIHandler : MonoBehaviour
         inputVector.x = TurnTowardTarget();
         inputVector.y = ApplyThrottleOrBrake(inputVector.x);
 
-        Debug.Log("CURRENT WAYPOINT: " + currentWaypoint.name);
+        //Debug.Log("CURRENT WAYPOINT: " + currentWaypoint.name);
 
         carController.SetInputVector(inputVector);
     }
@@ -207,7 +206,7 @@ public class CarAIHandler : MonoBehaviour
     private float ApplyThrottleOrBrake(float inputX)
     {
         // If we are going too fast then do not accelerate further. 
-        if (carController.GetVelocityMagnitude() > maxSpeed)
+        if (carController.GetVelocityMagnitude() > throttleLevel)
             return 0;
 
         // Apply throttle forward based on how much the car wants to turn.
@@ -315,6 +314,18 @@ public class CarAIHandler : MonoBehaviour
         {
             currentWaypoint = currentWaypoint.nextWaypointNode;
         }
+    }
+
+    public void StopCar()
+    {
+        Vector2 inputVector = Vector2.zero;
+
+        carController.SetInputVector(inputVector);
+    }
+
+    public void SetThrottleLevel(float value)
+    {
+        throttleLevel = value;
     }
 
     private void PrintAllRaceNodeDistances()

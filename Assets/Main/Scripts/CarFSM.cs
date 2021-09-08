@@ -5,7 +5,7 @@ using CRBT;
 
 public class CarFSM : MonoBehaviour
 {
-    SystemStatus systemStatus;
+    RaceStatus raceStatus;
 
     CarAIHandler carAIHandler;
     CarController carController;
@@ -14,7 +14,6 @@ public class CarFSM : MonoBehaviour
     private FSM fsm;
     public float fsmUpdateTimer = 0.015f;
 
-    //public float tireConditions = 100f; // TO BE REMOVED
     public bool start = false; // TO BE REMOVED
     public bool pitstop = false; // TO BE REMOVED
 
@@ -24,7 +23,7 @@ public class CarFSM : MonoBehaviour
 
     private void Awake()
     {
-        systemStatus = FindObjectOfType<SystemStatus>();
+        raceStatus = FindObjectOfType<RaceStatus>();
         carAIHandler = GetComponent<CarAIHandler>();
         carController = GetComponent<CarController>();
         carStatus = GetComponent<CarStatus>();
@@ -71,12 +70,12 @@ public class CarFSM : MonoBehaviour
     // --------------- CONDITIONS --------------- //
     public bool StartRace()
     {
-        return start;
+        return raceStatus.start;
     }
 
     public bool StopRace()
     {
-        return !start;
+        return !StartRace();
     }
 
     public bool GoPit()
@@ -102,6 +101,7 @@ public class CarFSM : MonoBehaviour
     public void Stop()
     {
         Debug.Log("Stop");
+        carAIHandler.StopCar();
     }
 
     public void Race()
@@ -116,6 +116,5 @@ public class CarFSM : MonoBehaviour
         Debug.Log("Pit");
         pitstopBehaviorTree.StartBehaviourTree();
     }
-
 
 }

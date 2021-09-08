@@ -19,12 +19,12 @@ public class SentinelFSM : MonoBehaviour
 
     //-----------
     SentinelBT sentinelBT;
-    SystemStatus systemStatus;
+    RaceStatus systemStatus;
     BehaviorTree AI;
 
     private void Awake()
     {
-        systemStatus = FindObjectOfType<SystemStatus>();
+        systemStatus = FindObjectOfType<RaceStatus>();
         sentinelBT = GetComponent<SentinelBT>();
     }
 

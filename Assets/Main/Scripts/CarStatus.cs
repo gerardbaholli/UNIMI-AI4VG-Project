@@ -12,6 +12,7 @@ public class CarStatus : MonoBehaviour
     public ActualLocation actualLocation = ActualLocation.Track;
     public float tiresCondition = 100f;
     public bool needToPit = false;
+    public bool wetTiresOn = false;
 
     private void FixedUpdate()
     {

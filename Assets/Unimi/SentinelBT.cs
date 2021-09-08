@@ -7,12 +7,12 @@ public class SentinelBT : MonoBehaviour
 {
 	public float reactionTime = .2f;
 
-	SystemStatus systemStatus;
+	RaceStatus systemStatus;
 	BehaviorTree AI;
 
     private void Awake()
     {
-		systemStatus = FindObjectOfType<SystemStatus>();
+		systemStatus = FindObjectOfType<RaceStatus>();
     }
 
     void Start()

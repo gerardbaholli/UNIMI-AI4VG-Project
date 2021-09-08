@@ -5,7 +5,7 @@ using CRBT;
 
 public class PitstopBT : MonoBehaviour
 {
-	SystemStatus systemStatus;
+	RaceStatus raceStatus;
 
 	[SerializeField] float reactionTime = 0.05f;
 	BehaviorTree AI;
@@ -19,7 +19,7 @@ public class PitstopBT : MonoBehaviour
 
 	void Start()
 	{
-		systemStatus = FindObjectOfType<SystemStatus>();
+		raceStatus = FindObjectOfType<RaceStatus>();
 		carAIHandler = GetComponent<CarAIHandler>();
 		carController = GetComponent<CarController>();
 		carStatus = GetComponent<CarStatus>();
@@ -130,7 +130,6 @@ public class PitstopBT : MonoBehaviour
 	public bool ChangeTires()
 	{
 		Debug.Log("Changing tires: " + carStatus.GetTiresCondition());
-		//StartCoroutine(Wait());
 		carStatus.PutNewTires();
 		return true;
 	}
