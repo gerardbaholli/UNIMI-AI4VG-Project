@@ -71,7 +71,7 @@ public class RaceBT : MonoBehaviour
 
 	public bool SlowSpeed()
     {
-		//carAIHandler.SetThrottleLevel(1f);
+		Debug.Log("Slow Speed");
 		carController.SetSpeed(1f);
 		return true;
     }

@@ -313,7 +313,7 @@ public class CarAIHandler : MonoBehaviour
     {
         //Debug.Log("Waypoint changed");
         //Debug.Log("currentWaypoint: " + currentWaypoint.name + " " +  currentWaypoint.transform.position + " @@@ gameObject: " + gameObject.transform.up);
-        Debug.Log("DOT: " + Vector3.Dot((currentWaypoint.transform.position - gameObject.transform.position).normalized, gameObject.transform.up.normalized));
+        //Debug.Log("DOT: " + Vector3.Dot((currentWaypoint.transform.position - gameObject.transform.position).normalized, gameObject.transform.up.normalized));
         if (Vector3.Dot((currentWaypoint.transform.position - gameObject.transform.position).normalized, gameObject.transform.up.normalized) < value)
         {
             currentWaypoint = currentWaypoint.nextWaypointNode;

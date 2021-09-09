@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CarStatus : MonoBehaviour
 {
@@ -57,4 +58,8 @@ public class CarStatus : MonoBehaviour
         tiresCondition -= tiresWear;
     }
 
+    public float GetTiresWear()
+    {
+        return tiresWear;
+    }
 }
