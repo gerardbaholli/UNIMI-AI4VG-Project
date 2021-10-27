@@ -546,17 +546,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &557150718 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5559177605929681155, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-  m_PrefabInstance: {fileID: 341462420}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b783280bee066a489fa783c4030d03e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &690248628
 GameObject:
   m_ObjectHideFlags: 0
@@ -822,17 +811,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887025727}
   m_CullTransparentMesh: 1
---- !u!114 &977084011 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5559177605929681155, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-  m_PrefabInstance: {fileID: 2062614392}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b783280bee066a489fa783c4030d03e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1026247115
 GameObject:
   m_ObjectHideFlags: 0
@@ -1885,17 +1863,6 @@ MonoBehaviour:
   maxSpeed: 0
   minDistanceToReachWaypoint: 1.8
   nextWaypointNode: {fileID: 1429106625}
---- !u!114 &1550420690 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5559177605929681155, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-  m_PrefabInstance: {fileID: 1990891151}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b783280bee066a489fa783c4030d03e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1563228241
 GameObject:
   m_ObjectHideFlags: 0
@@ -2444,11 +2411,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ffbc26c3118824aae6520035fa35f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  car1Status: {fileID: 6846993946773963753}
-  car2Status: {fileID: 557150718}
-  car3Status: {fileID: 977084011}
-  car4Status: {fileID: 1550420690}
-  textTiresWear: {fileID: 0}
   start: 0
   saferyCar: 0
   safetyCarMaxSpeed: 1
@@ -2851,6 +2813,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CarAI
       objectReference: {fileID: 0}
+    - target: {fileID: 1306961039159378861, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1976005151611206090, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
       propertyPath: pitstopExit
       value: 
@@ -2873,14 +2839,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
---- !u!114 &6846993946773963753 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5559177605929681155, guid: 96c8cc6f0fd9348359029b26deb9cefd, type: 3}
-  m_PrefabInstance: {fileID: 1306961037442450154}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b783280bee066a489fa783c4030d03e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
